@@ -1,0 +1,322 @@
+/* Fixed bar */
+#fixed-bar {    
+    width: 100%;
+    height: 7.5rem;
+    position: fixed; /* Make it stick/fixed */
+    top: 0rem; /* Stay on top */
+    transition: top 0.4s; /* Transition effect when sliding down (and up) */
+    background-color: white;
+}
+
+
+
+/* Inner bar */
+#div-inner-bar {
+    display: grid;
+    grid-template-columns: 12% 52% 12% 12% 12%;
+    justify-content: center;
+    align-items: center;    
+    width: 70%;
+    height: 100%;
+    margin: 0 auto;
+    border-bottom: 3px solid green;
+    text-align: center;
+}    
+
+#div-radio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    width: 75%;
+}    
+
+    
+/* Buttons */
+.btn-fixed-bar {
+    margin: 0 auto;
+    width: 8rem;
+    height: 4rem;
+    font-size: 1.2rem;
+    border: none;
+    background-color: white;    
+}
+    .btn-fixed-bar:hover {
+        color: green;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+
+
+
+/* Div create message */
+#div-create-message {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    margin: 4rem auto 0 auto;
+    text-align: center;
+    width: 70%;
+    font-size: 1.5rem;
+    height: 4rem;
+    transition: margin 1s;
+}
+
+    #lbl-create-message {        
+        color: green;
+        transition: color 2s;        
+        padding: 1rem;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+
+
+/* Div create 1 */
+#div-create-1 {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    /* margin: 8.5rem auto 0 auto; */
+    margin: 1rem auto 0 auto;
+
+    width: 70%;
+}
+    #div-create-1 label {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+        #div-create-1 label:hover {
+            cursor: pointer;
+        }
+
+    #lblName {
+        font-size: 1rem;
+        margin-left: 5rem;
+    }
+
+    #div-create-1 select {
+        width: 5rem;
+        padding: 1rem;
+        font-size: 1.3rem;
+        text-align: center;
+        margin: 0 auto;
+        border: none;
+        background-color: white;
+        border-radius: 3% 3% 0 0;
+        border-bottom: 1px solid green;
+    }
+
+    #div-create-1 input {
+        width: 50rem;
+        padding: 1rem;
+        font-size: 1.3rem;
+        text-align: left;
+        margin: 0 auto;
+        border: none;
+        background-color: white;
+        border-radius: 3% 3% 0 0; 
+        border-bottom: 1px solid green;
+    }
+
+
+
+/* Div create 2 */
+#div-create-2 {
+    display: grid;
+    grid-template-columns: 1fr;    
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    width: 70%;
+}
+
+    #div-create-2 label {
+        font-size: 1.2rem;
+        margin: 1rem;
+        text-align: center;        
+    }
+
+        #div-create-2 label:hover {
+            cursor: pointer;
+        }
+
+    #spnCharComments {
+        font-size: 1rem;
+        margin-left: 5rem;
+    }
+
+    #div-create-2 textarea {
+        resize: none;
+        width: 80%;
+        height: 8rem;
+        border: none;
+        border-bottom: 1px solid green;
+        border-radius: 2% 2% 0 0;
+        font-size: 1.3rem;
+        padding: 1rem;
+        margin: 0 auto;
+    }
+
+
+
+/* Div create 3 */
+#div-create-3 {
+    display: none;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto;
+    width: 70%;    
+}
+
+    #div-create-3 div:first-child {
+        display: grid;
+    }
+
+    #div-create-3 label {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+#div-definitions {
+    display: grid;
+    grid-template-columns: 1fr;    
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+}
+    #div-definitions div:first-child {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem auto;
+        width: 50%;
+    }
+
+        #div-definitions div:first-child label {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem;
+        }
+            #div-definitions :first-child label:hover {
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+
+        #div-definitions div:nth-child(2) {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem auto;
+            width: 80%;
+        }
+
+            #div-definitions div:nth-child(2) textarea {
+                resize: none;
+                width: 100%;
+                height: 35rem;
+                overflow: auto;
+                background-color: var(--green_05);
+                border: none;
+                border-bottom: 1px solid green;
+                margin: 0 auto;
+                font-size: 1.3rem;
+                padding: 1rem;
+                border-radius: 2% 2% 0 0;
+            }
+
+
+
+/* Div create 4 */            
+#div-create-4 {
+    display: none;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto 12rem auto;
+    width: 70%;    
+}
+    #div-create-4 div:first-child {
+        display: grid;
+    }
+
+    #div-create-4 label {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+#div-assess {
+    display: grid;
+    grid-template-columns: 1fr;    
+    grid-template-rows: auto;
+    justify-content: center;
+    align-items: center;
+}
+    #div-assess div:first-child {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: auto;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem auto;
+        width: 60%;
+    }
+
+        #div-assess div:first-child label {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 1rem;
+        }
+            #div-assess :first-child label:hover {
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+
+        #div-assess div:nth-child(2) {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem auto;
+            width: 80%;
+        }
+
+            #div-assess div:nth-child(2) textarea {
+                resize: none;
+                width: 100%;
+                height: 25rem;
+                overflow: auto;
+                background-color: var(--green_05);
+                border: none;
+                border-bottom: 1px solid green;
+                margin: 0 auto;
+                font-size: 1.3rem;
+                padding: 1rem;
+                border-radius: 2% 2% 0 0;
+            }
+
+
+
+
+
+
+
+
+
+            

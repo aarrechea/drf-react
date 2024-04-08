@@ -1,0 +1,25 @@
+/* ----- Menu bar styles ----- */
+#background_menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    height: 5rem;
+    width: 100%;
+    margin: 0 auto;
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    transition: top 0.4s; /* Transition effect when sliding down (and up) */
+    background-color: var(--brown_100);}
+
+    #bar_menu {
+        display: grid;
+        grid-template-columns: 20% 40% 40%;        
+        justify-items: center;
+        align-items: center;
+        width: 70%;
+        height: 100%;
+        grid-column-gap: 4rem;    
+        margin: 0 auto;
+        text-align: center;           
+        font-size: 1.5rem;}
