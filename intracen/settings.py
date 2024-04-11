@@ -1,6 +1,13 @@
 # Imports
-import datetime
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+
+
+# Loading dotenv
+load_dotenv()
+ENV = os.environ.get("ENV")
 
 
 
@@ -10,13 +17,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
+#SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
+SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6')
 
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False if ENV == "PROD" else True
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 
 
 
@@ -101,11 +109,11 @@ WSGI_APPLICATION = 'intracen.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'intracen',
-        'USER': 'admin',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv("DATABASE_NAME", "intracen"),
+        'USER': os.getenv("DATABASE_USER", "admin"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD", "admin"),
+        'HOST': os.environ.get("DATABASE_HOST", "localhost"),
+        'PORT': os.getenv("DATABASE_PORT", "5432"),
     }
 }
 
