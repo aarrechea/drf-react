@@ -1,0 +1,29 @@
+name: Build, Test and Deploy Intracen
+
+on:
+    push:
+        branches: [ main ]
+
+jobs:
+    build-test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checout@v2
+            - name: Injecting env vars
+              run: echo "SECRET_KEY=django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
+                DATABASE_NAME=intracen
+                DATABASE_USER=admin
+                DATABASE_PASSWORD=admin
+                DATABASE_HOST=intracen_db
+                DATABASE_PORT=5432
+                POSTGRES_USER=admin
+                POSTGRES_PASSWORD=admin
+                POSTGRES_DB=intracen
+                ENV=DEV
+                DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost" >> .env
+            - name: Building containers
+              run: docker-compose up -d --build
+
+
+
+

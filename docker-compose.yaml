@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    container_name: intracen
+    container_name: intracen_web
     restart: always
     image: nginx:latest
     volumes:
@@ -12,7 +12,7 @@ services:
       - "80:80"
     depends_on:
       - api # waiting for the Django api to start the service
-
+          
   db:
     container_name: intracen_db
     image: postgres:14.3-alpine
