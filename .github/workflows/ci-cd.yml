@@ -8,7 +8,7 @@ jobs:
     build-test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checout@v2
+            - uses: actions/checkout@v2
             - name: Injecting env vars
               run: echo "SECRET_KEY=django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
                 DATABASE_NAME=intracen
