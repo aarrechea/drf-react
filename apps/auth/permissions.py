@@ -22,10 +22,7 @@ class UserPermission(BasePermission):
     
     
     # works in the overall endpoint
-    def has_permission(self, request, view):
-        
-        print(f"Enter has permission - request user: {request.user} - request: {request}")
-        
+    def has_permission(self, request, view):        
         if view.basename in ['element']:
             if request.user.is_anonymous:
                 return request.method in SAFE_METHODS                        
