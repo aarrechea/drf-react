@@ -2,7 +2,7 @@
 
 TARGET='main'
 
-cd ~/drf-react || exit
+cd ~/drf-react/intracen || exit
 
 ACTION_COLOR='\033[1;90m'
 NO_COLOR='\033[0m'
@@ -21,7 +21,7 @@ UPSTREAM_HASH=$(git rev-parse ${TARGET}@{upstream})
 
 if ["$HEAD_HASH" == "UPSTREAM_HASH"]
 then
-    echo -e "${FINISHED}"The current bransh is up to date with origin/${TARGET}."${NO_COLOR}"
+    echo -e "${FINISHED}"The current branch is up to date with origin/${TARGET}."${NO_COLOR}"
     exit 0
 fi
 
