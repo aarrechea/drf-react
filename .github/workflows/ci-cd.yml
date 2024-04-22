@@ -39,7 +39,7 @@ jobs:
             passphrase: ${{secrets.SSH_PASSPHRASE}}
             script: |
                 cd ~/drf-react
-                ./docker-ec2-deploys.sh
+                ./docker-ec2-deploy.sh
 
 
 
