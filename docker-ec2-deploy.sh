@@ -2,7 +2,8 @@
 
 TARGET='main'
 
-cd /drf-react/intracen || exit
+
+cd /drf-react.git || exit
 
 ACTION_COLOR='\033[1;90m'
 NO_COLOR='\033[0m'
