@@ -32,7 +32,7 @@ git pull origin main;
 
 # we can now build and start the containers
 echo we can now build and start the containers
-docker compose up -d --build
+sudo docker compose up -d --build
 exit 0;
 
 
