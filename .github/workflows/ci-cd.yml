@@ -38,7 +38,7 @@ jobs:
             key: ${{secrets.SSH_PRIVATE_KEY}}
             passphrase: ${{secrets.SSH_PASSPHRASE}}
             script: |
-                cd drf-react
+                cd ~/drf-react
                 ./docker-ec2-deploy.sh
 
 
