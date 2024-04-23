@@ -21,7 +21,7 @@ git fetch
 HEAD_HASH=$(git rev-parse HEAD)
 UPSTREAM_HASH=$(git rev-parse ${TARGET}@{upstream})
 
-if ["$HEAD_HASH" == "$UPSTREAM_HASH"]
+if [ "$HEAD_HASH" == "$UPSTREAM_HASH" ]
 then
     echo -e "${FINISHED}"The current branch is up to date with origin/${TARGET}."${NO_COLOR}"
     exit 0
