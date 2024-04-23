@@ -9,12 +9,14 @@ NO_COLOR='\033[0m'
 
 echo -e ${ACTION_COLOR} Checking if we are on the target branch
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo branch: "$BRANCH" target: ${TARGET}
 if [ "$BRANCH" != ${TARGET} ]
 then
     exit 0
 fi
 
 #Checking if the repository is up to date
+echo Checking if the repository is up to date
 git fetch
 HEAD_HASH=$(git rev-parse HEAD)
 UPSTREAM_HASH=$(git rev-parse ${TARGET}@{upstream})
