@@ -7,13 +7,13 @@ from apps.user.models import User
 
 """ Choices """
 LETTERS = (
-        ('1','A'), ('2','B'), ('3','C'), ('4','D'), ('5','E'), ('6','F'), ('7','G'), ('8','H'), ('9','I'),
-        ('10','J'), ('11','K'), ('12','L'), ('13','M'), ('14','N'), ('15','O'), ('16','P'), ('17','Q'), ('18','R'),
-        ('19','S'), ('20','T'), ('21','U'), ('22','V'), ('23','W'), ('24','X'), ('25','Y'), ('26','Z')
+        (1,'A'), (2,'B'), (3,'C'), (4,'D'), (5,'E'), (6,'F'), (7,'G'), (8,'H'), (9,'I'),
+        (10,'J'), (11,'K'), (12,'L'), (13,'M'), (14,'N'), (15,'O'), (16,'P'), (17,'Q'), (18,'R'),
+        (19,'S'), (20,'T'), (21,'U'), (22,'V'), (23,'W'), (24,'X'), (25,'Y'), (26,'Z')
     )
 
 ELEMENT_TYPE = (
-        ('1', "Competence"), ('2', "Capability"), ('3', "Process")
+        ('1', 'Competence'), ('2', 'Capability'), ('3', 'Process')
     )
 
 
@@ -28,7 +28,7 @@ class ElementManager(AbstractManager):
 class Element(AbstractModel):                    
     user_creator = models.ForeignKey(to="apps_user.User", on_delete=models.CASCADE)        
     element_type = models.CharField(choices=ELEMENT_TYPE, verbose_name='Element Type')
-    letter = models.CharField(choices=LETTERS, verbose_name="Letter")
+    letter = models.IntegerField(choices=LETTERS, verbose_name="Letter")
     name = models.CharField(max_length=250, verbose_name='Competence name', null=False, blank=False)
     comments = models.CharField(max_length=255, verbose_name='Comments', default='None')
     eva_progress = models.IntegerField(default=0)

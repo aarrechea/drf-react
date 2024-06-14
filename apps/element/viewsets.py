@@ -15,19 +15,18 @@ from apps.element.models import Element, LETTERS, ELEMENT_TYPE
 class ElementViewSet(AbstractViewSet):
     http_method_names = ['get', 'post', 'put', 'delete']
     permission_classes = (UserPermission, )
-    serializer_class = ElementSerializer    
+    serializer_class = ElementSerializer  
     
-                                        
     def get_queryset(self):                        
         queryset = Element.objects.all()    
         elemento = self.request.query_params.get('type')
-        letter = self.request.query_params.get('letter')
+        letter = self.request.query_params.get('letter')                        
                         
         if elemento is not None and int(elemento) > 0:
-            queryset = queryset.filter(element_type=elemento)
+            queryset = queryset.filter(element_type=elemento)                    
             
         if letter is not None and int(letter) > 0:
-            queryset = queryset.filter(letter=letter)
+            queryset = queryset.filter(letter=letter)                
                 
         return queryset.order_by('element_type', 'letter')
         

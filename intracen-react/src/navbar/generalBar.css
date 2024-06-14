@@ -4,7 +4,7 @@
     grid-template-columns: 1fr;
     justify-items: center;
     align-items: center;
-    height: 5rem;
+    height: 4rem;
     width: 100%;
     margin: 0 auto;
     position: fixed; /* Make it stick/fixed */
@@ -14,7 +14,7 @@
 
     #bar_menu {
         display: grid;
-        grid-template-columns: 20% 40% 40%;        
+        grid-template-columns: 30% 70%;
         justify-items: center;
         align-items: center;
         width: 70%;
@@ -22,4 +22,19 @@
         grid-column-gap: 4rem;    
         margin: 0 auto;
         text-align: center;           
-        font-size: 1.5rem;}
+        font-size: 1.5rem;
+    }
+
+        #user_identification {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+            #user_identification span {
+                font-size: 1.5rem;
+                color: black;
+                margin-left: 1rem;
+            }

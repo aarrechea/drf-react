@@ -3,6 +3,7 @@ from rest_framework import routers
 from apps.auth.viewsets import RegisterViewSet, LoginViewSet, RefreshViewSet
 from apps.element.viewsets import ElementViewSet
 from apps.user.viewsets import UserViewSet
+from apps.relations.viewsets import RelationViewSet
 
 
 
@@ -25,6 +26,11 @@ router.register(r'auth/refresh', RefreshViewSet, basename='auth-refresh')
 
 """ Element """
 router.register(r'element', ElementViewSet, basename='element')
+
+
+
+""" Relations """
+router.register(r'relations', RelationViewSet, basename='relations')
 
 
 

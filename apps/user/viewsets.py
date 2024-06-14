@@ -15,7 +15,7 @@ class UserViewSet(AbstractViewSet):
     
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return User.objects.all()
+            return User.objects.all()                
         
         return User.objects.exclude(is_superuser=True)
     

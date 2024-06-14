@@ -1,5 +1,5 @@
 /* Imports */
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { getUser } from "../hooks/user.actions";
 import "../colors.css"
 import "./generalBar.css"
@@ -8,6 +8,7 @@ import "./generalBar.css"
 
 /* General bar */
 function GeneralBar({menu}) {
+    /* Return */
     return (
         <div id="background_menu">
             <div id="bar_menu">
@@ -17,8 +18,7 @@ function GeneralBar({menu}) {
                     { getUser()
                         ?
                             <>
-                                <h6 style={{color:'grey'}}>User</h6>
-                                <h4>{getUser().email}</h4>
+                                <h6 style={{color:'grey'}}>User:<span>{getUser().email}</span></h6>                                
                             </>
                         :
                             <>
@@ -26,12 +26,7 @@ function GeneralBar({menu}) {
                                 <h4>Anonymous</h4>
                             </>
                     }
-                </div>
-                
-                <div>
-                    <h6 style={{color:'grey'}}>Menu</h6>
-                    <h4 id="title">{menu}</h4>
-                </div>
+                </div>                
             </div>
       </div>
     )

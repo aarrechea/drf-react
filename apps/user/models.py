@@ -51,7 +51,7 @@ class User(AbstractModel, AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50)
     eva_closed = models.SmallIntegerField(default=0)
     eva_in_progress = models.SmallIntegerField(default=0)
-    user_type = models.CharField(max_length=12, choices=USER_TYPE, default=3)
+    user_type = models.CharField(max_length=12, choices=USER_TYPE, default='3')
     photo = models.ImageField(null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

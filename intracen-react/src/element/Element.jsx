@@ -69,13 +69,14 @@ function ElementPage() {
         if (e.target.id === "select-letter") {            
             type = _type.current.value;
             letter = e.target.value;
-        }                                        
+        }                                
+                
         
         axiosService
             .get(`/element?type=${type}&letter=${letter}`)
 
             .then((res) => {
-                setElements(() => [...res.data]);
+                setElements(() => [...res.data]);                
             })
 
             .catch((err) => console.error(err));        

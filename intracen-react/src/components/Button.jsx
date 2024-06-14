@@ -4,13 +4,14 @@ import "./button.css"
 
 
 /* Button */
-const ButtonCss = ({children, style, onClick, value}) => {
+const ButtonCss = ({children, style, onClick, value, dataPage}) => {
     return (
         <button 
             onClick={onClick} 
-            className="buttonCss" 
+            className="buttonCss btnMainMenu" 
             style={style}
             value={value}
+            data-page={dataPage}
         >
             {children}
         </button>

@@ -44,8 +44,8 @@ const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDelete
 
     /* Return */
     return (
-        <div id="myModalDelete" class="modal-element-delete" style={{display:showModal}}>
-            <div class="modal-content-delete">
+        <div id="myModalDelete" className="modal-element-delete" style={{display:showModal}}>
+            <div className="modal-content-delete">
                 {deleted 
                 ?
                     <label>The following element was succesfully deleted: </label>
@@ -64,7 +64,7 @@ const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDelete
                 ?
                     <div id="div-btn-delete-modal">
                         <button 
-                            class="close-delete-modal" 
+                            className="close-delete-modal" 
                             id="btn-close-delete-modal" 
                             onClick={HandleClick}>Close</button>                    
                     </div>
@@ -72,12 +72,12 @@ const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDelete
 
                     <div id="div-btn-delete-modal">
                         <button 
-                            class="close-delete-modal" 
+                            className="close-delete-modal" 
                             id="btn-close-delete-modal" 
                             onClick={HandleClick}>Close</button>
 
                         <button
-                            class="btn-delete-modal"
+                            className="btn-delete-modal"
                             id="btn-close-delete-modal"
                             onClick={HandleDelete} style={{color:'red'}}>Delete</button>
                     </div>

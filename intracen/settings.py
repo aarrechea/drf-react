@@ -43,6 +43,7 @@ LOCAL_APPS = [
     'apps.user',
     'apps.auth',
     'apps.element',    
+    'apps.relations',
 ]
 
 THIRD_PARTY_APPS = [
@@ -110,8 +111,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv("DATABASE_NAME", "intracen"),
-        'USER': os.getenv("DATABASE_USER", "admin"),
-        'PASSWORD': os.getenv("DATABASE_PASSWORD", "admin"),
+        'USER': os.getenv("DATABASE_USER", "postgres"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD", "postgres"),
         'HOST': os.environ.get("DATABASE_HOST", "localhost"),
         'PORT': os.getenv("DATABASE_PORT", "5432"),
     }
@@ -197,12 +198,12 @@ REST_FRAMEWORK = {
 
 
 # Cors headers
-""" CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000"
-] """
+]
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+""" CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
 
 
 

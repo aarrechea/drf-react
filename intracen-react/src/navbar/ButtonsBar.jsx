@@ -1,75 +1,91 @@
 /* Imports */
-import React from "react";
+import React, {useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ButtonCss from "../components/Button";
 import { getUser } from "../hooks/user.actions";
-import { useNavigate } from "react-router-dom";
 import { useUserActions } from "../hooks/user.actions";
 import "../colors.css";
 import "./buttonBar.css"
+import { onClickBtnMainMenu } from "./navBar";
 
 
 
 /* Buttons bar */
 function ButtonsBar({click}) {
-    /* Constants */
-    const navigate = useNavigate();
+    /* Constants */    
     const userActions = useUserActions();     
     const user = getUser()    
-    const style = {height:'2rem', backgroundColor: 'var(--brown_100)', fontSize: '1.1rem', borderWidth: '0'}
+    const style = {height:'2rem', backgroundColor: 'var(--brown_100)', 
+                    fontSize: '1.0rem', borderWidth: '0', textAlign:'center'};
+    const navigate = useNavigate();
+    const location = useLocation();
+            
     
-
-    /* Handle click */
-    function handleClick(e) {        
-        click(e);
-    }
+    /* Use Effect */
+    useEffect(() => {        
+        onClickBtnMainMenu(location.pathname);
+    })
+        
     
-                
 
     /* Return */
     return (
         <>
-            <div id="div-main">
+            <div id="div-main" style={{top:'4rem'}}>
                 <div className="navbar" style={{padding:0}}>
                     <ButtonCss
-                        onClick={handleClick}
+                        onClick={() => navigate('/evaluations')}
                         children="Evaluations"
                         style={style}
-                        value="Evaluations"
+                        value="Evaluations"                        
                     />
-
+                    
                     <ButtonCss                        
-                        onClick={handleClick}
                         children="Companies"
                         style={style}
                         value="Companies"
+                        className='btnMainMenu'
                     />
                                             
                     {parseInt(user.user_type) < 3 
-                        ?                            
-                            <ButtonCss
-                                onClick={handleClick}
-                                children="Elements"
-                                style={style}
-                                value="Elements"
-                            />
+                        ?   
+                            <>
+                                <ButtonCss
+                                    onClick={() => navigate('/relation-page')}
+                                    children="Relations"
+                                    style={style}                                    
+                                    value="Relations"
+                                    dataPage="/relation-page"
+                                    className='btnMainMenu'
+                                />                         
+
+                                <ButtonCss
+                                    onClick={() => navigate('/element')}
+                                    children="Elements"
+                                    style={style}
+                                    value="Elements"
+                                    dataPage='/element'
+                                    className='btnMainMenu'
+                                />
+                            </>                            
                         : null
                     }
 
                     {parseInt(user.user_type) === 1
                         ?
                             <>
-                                <ButtonCss
-                                    onClick={handleClick}
+                                <ButtonCss                                    
                                     children="Users"
                                     style={style}
                                     value="Users"
+                                    className='btnMainMenu'
                                 />
                                 
-                                <ButtonCss 
-                                    onClick={handleClick}
+                                <ButtonCss                                     
                                     children="Administration"                                    
                                     style={style}
                                     value="Administration"
+                                    className='btnMainMenu'
                                 />
                             </>
                         : null
@@ -81,8 +97,7 @@ function ButtonsBar({click}) {
                         style={style}                        
                     />
 
-                    <ButtonCss
-                        onClick={handleClick}
+                    <ButtonCss                        
                         children="Reset password"
                         style={style}
                         value="Reset password"

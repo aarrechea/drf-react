@@ -16,16 +16,16 @@ window.onscroll = function() {
         }
         
         if (document.getElementById("div-main")) {
-            document.getElementById("div-main").style.top = '5rem'    
+            document.getElementById("div-main").style.top = '4rem'    
         }        
 
         if (document.getElementById("div-element-bar")) {
-            document.getElementById("div-element-bar").style.top = '8.5rem'    
+            document.getElementById("div-element-bar").style.top = '7.5rem'    
         }        
 
     } else {      
         if (document.getElementById("background_menu")) {
-            document.getElementById("background_menu").style.top = '-5rem';
+            document.getElementById("background_menu").style.top = '-4rem';
         }
 
         if (document.getElementById("div-main")) {
@@ -41,4 +41,30 @@ window.onscroll = function() {
 }
 
 
+
+/* Change font weight and color of the button font on click */
+function onClickBtnMainMenu(pathName) {
+    let buttonClicked;
+
+    document.querySelectorAll('.btnMainMenu').forEach(function(button) {        
+        button.style.fontWeight = 'normal';
+        button.style.color = 'black';
+
+        if (pathName === button.getAttribute('data-page')) {
+            buttonClicked = button;
+        }
+    })
+
+    if (buttonClicked) {
+        buttonClicked.style.fontWeight = 'bold';
+        buttonClicked.style.color = 'blue';    
+    }    
+}
+
+
+
+/* Exports */
+export {
+    onClickBtnMainMenu
+}
 

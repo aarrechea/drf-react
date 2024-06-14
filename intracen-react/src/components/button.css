@@ -1,6 +1,6 @@
 .buttonCss {
     height: 5rem;
-    width: 12rem;
+    width: auto;
     border-radius: 0.4rem;
     border-width: 0.1rem;
     font-size: 1.3rem;

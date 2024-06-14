@@ -10,7 +10,6 @@ function ProtectedRoute({children}) {
     /* Constants */
     const user = getUser();
 
-
     
     /* Return */
     return user ? <>{children}</> : <Navigate to="/" />
