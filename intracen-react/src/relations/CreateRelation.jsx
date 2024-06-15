@@ -9,6 +9,7 @@ import {useTable} from "react-table";
 import { fcnReorderLetterTable } from "./js/various";
 import DataContext from "./store/DataContext";
 import { useContext } from "react";
+import returnData from "../data";
 
 
 
@@ -136,11 +137,13 @@ const ElementTable = (props) => {
 
     const fetchData = () => {
         try {
-            axiosService
+            /* axiosService
                 .get(`/element`)                
                 .then((res) => {                     
                     setData(res.data);
-                }) 
+                })  */
+
+            setData(returnData);
 
         } catch (error) {
             console.error("Error fetching data: ", error);

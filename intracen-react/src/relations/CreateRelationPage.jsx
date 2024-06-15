@@ -89,7 +89,7 @@ const CreateRelationPage = () => {
         
     if(Object.keys(originalRow).length > 0) {        
         extendedRow.current = createExtendedRow();
-        row.current = {...originalRow, ...extendedRow.current}                
+        row.current = {...originalRow, ...extendedRow.current};
 
         setNewTable(prevState => {
             return [{

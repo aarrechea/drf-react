@@ -7,6 +7,7 @@ import "./css/element.css"
 import DeleteModal from "./DeleteModal";
 import axiosService from "../helpers/axios";
 import ViewModalProcess from "./ViewModal";
+import returnData from "../data";
 
 
 
@@ -34,12 +35,14 @@ function ElementPage() {
             
     /* Axios service to fetch the list of all element when page is loaded */
     useEffect(() => {
-        axiosService
+        /* axiosService
             .get(`/element`)
             .then(res => res.data)
             .then((data) => {                
                 setElements(() => [...data]);                
-            })
+            }) */
+
+            setElements(returnData);
     }, [])       
     
 
