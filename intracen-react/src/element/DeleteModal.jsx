@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import axiosService from "../helpers/axios";
 import "./css/DeleteModal.css";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,6 +10,8 @@ import "./css/DeleteModal.css";
 const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDeleted}) => {
     /* States */
     const [deleted, setDeleted] = useState(false);
+
+    const navigate = useNavigate();
 
 
     /* Handle click to hide modal */
@@ -23,8 +26,7 @@ const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDelete
         /* Axios */
         axiosService
             .delete(`/element/${elementToDelete.public_id}/`)
-
-            .then((res) => {                                
+            .then((res) => {                
                 setElementDeleted(() => {
                     return {
                         edited:true,
@@ -32,11 +34,11 @@ const DeleteModal = ({showModal, setShowModal, elementToDelete, setElementDelete
                     }
                 })
 
-                setDeleted(() => true);
+                setDeleted(() => true);                
             })
-
-            .catch((error) => {
-                console.log("Error: " + error);
+            .catch((error) => {                
+                console.log("Error deleting the element: " + error);
+                navigate("/");
             });
     };
     

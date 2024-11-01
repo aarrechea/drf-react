@@ -13,13 +13,20 @@
 /* Create relation inner bar */
 #createRelationInnerBar {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 20% 60% 20%;
     justify-content: center;
     align-items: center;
     width: 70%;
     height: 100%;
     margin: 0 auto;
 }
+    #createRelationInnerBar label {
+        opacity: 0;        
+        text-align: center;
+        width: auto;
+        height: auto;
+        transition: opacity 1s;
+    }
 
 /* Fixed bar Button */
 #createRelationFixedBar button {
@@ -164,7 +171,7 @@
 
 
 
-/* New relationship table */    
+/* /* New relationship table   
 #divNewTableTitle {
     display: grid;
     grid-template-columns: 25% 50% 25%;
@@ -237,5 +244,5 @@
 #newTableBody td:nth-child(5) {
     text-align: left;
 }
-
+ */
 

@@ -8,11 +8,14 @@ import DeleteModal from "./DeleteModal";
 import axiosService from "../helpers/axios";
 import ViewModalProcess from "./ViewModal";
 import returnData from "../data";
+import { useNavigate } from "react-router-dom";
 
 
 
 /* Element page */
-function ElementPage() {                
+function ElementPage() {
+    const navigate = useNavigate();
+
     /* States */        
     const [elements, setElements] = useState([]);
     const [count, setCount] = useState();
@@ -35,15 +38,18 @@ function ElementPage() {
             
     /* Axios service to fetch the list of all element when page is loaded */
     useEffect(() => {
-        /* axiosService
+        axiosService
             .get(`/element`)
             .then(res => res.data)
             .then((data) => {                
                 setElements(() => [...data]);                
-            }) */
+            })
+            .catch((e) => {
+                navigate("/");
+            })
 
-            setElements(returnData);
-    }, [])       
+            //setElements(returnData);
+    }, [navigate])       
     
 
     /* If the element was deleted */
@@ -61,6 +67,9 @@ function ElementPage() {
             .then((data) => {
                 setElements(() => [...data]);
             })
+            .catch((e) => {
+                navigate("/");
+            })
     }
     
 
@@ -77,12 +86,14 @@ function ElementPage() {
         
         axiosService
             .get(`/element?type=${type}&letter=${letter}`)
-
             .then((res) => {
                 setElements(() => [...res.data]);                
             })
+            .catch((err) => {
+                console.error(err);
+                navigate("/");
+            });
 
-            .catch((err) => console.error(err));        
     };
 
 
@@ -101,21 +112,26 @@ function ElementPage() {
             <ElementBar count={count} onSelectChange={HandleChangeSelect}/>
                         
             <div id="div-cards">
-                {elements?.map((element, index) => (
-                    <ElementCard 
-                        key={index} 
-                        letter={element.letter_display} 
-                        name={element.name} 
-                        element_type={element.element_type_display}
-                        eva_progress={element.eva_progress}
-                        eva_made={element.eva_made}
-                        public_id={element.public_id}
-                        user_creator={element.user_creator}
-                        setShowModal={setShowModal}
-                        setElementToDelete={setElementToDelete}
-                        setShowViewModal={setShowViewModal}
-                    />
-                ))}
+                {elements?.map((element, index) => {
+
+                    //console.log("element: ", element)
+
+                    return (
+                        <ElementCard 
+                            key={index} 
+                            letter={element.letter_display} 
+                            name={element.name} 
+                            element_type={element.element_type_display}
+                            eva_progress={element.eva_progress}
+                            eva_made={element.eva_made}                            
+                            id={element.id}
+                            user_creator={element.user.id}
+                            setShowModal={setShowModal}
+                            setElementToDelete={setElementToDelete}
+                            setShowViewModal={setShowViewModal}
+                        />
+                    )
+                })}
             </div>
 
             <DeleteModal 

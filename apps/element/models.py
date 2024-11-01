@@ -26,7 +26,7 @@ class ElementManager(AbstractManager):
 
 """ Element class """
 class Element(AbstractModel):                    
-    user_creator = models.ForeignKey(to="apps_user.User", on_delete=models.CASCADE)        
+    user_creator = models.ForeignKey(to="apps_user.User", on_delete=models.CASCADE)
     element_type = models.CharField(choices=ELEMENT_TYPE, verbose_name='Element Type')
     letter = models.IntegerField(choices=LETTERS, verbose_name="Letter")
     name = models.CharField(max_length=250, verbose_name='Competence name', null=False, blank=False)

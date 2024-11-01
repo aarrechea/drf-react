@@ -44,6 +44,11 @@ LOCAL_APPS = [
     'apps.auth',
     'apps.element',    
     'apps.relations',
+    'apps.country',
+    'apps.industry',
+    'apps.companies',
+    'apps.evaluations',
+    'apps.logs',
 ]
 
 THIRD_PARTY_APPS = [
@@ -206,6 +211,9 @@ CORS_ALLOWED_ORIGINS = [
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
 
 
+
+# Geo ip path
+GEOIP_PATH = BASE_DIR / 'geoIp'
 
 
 

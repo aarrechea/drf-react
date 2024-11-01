@@ -15,7 +15,12 @@ const RelationsPage = () => {
     return (
         <div>
             <Navigationbar/>
-            <RelationsBar/>
+            <RelationsBar                           
+                navigateTo='/create-relation'
+                mode='create'
+                create='relation'
+                title='Relation tree'
+            />
             <RelationList/>
         </div>
     )

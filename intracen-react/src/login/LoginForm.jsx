@@ -39,7 +39,6 @@ function LoginForm() {
         /* Axios */
         userActions
             .login(data)
-            
             .catch((err) => {
                 if(err.message) {
                     setError(err.request.response);
@@ -66,7 +65,7 @@ function LoginForm() {
             <label htmlFor="password">Password</label>
             <input 
                 type="password"                 
-                id="password" 
+                id="password"
                 autoComplete="off" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

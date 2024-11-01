@@ -19,29 +19,71 @@ function ButtonsBar({click}) {
                     fontSize: '1.0rem', borderWidth: '0', textAlign:'center'};
     const navigate = useNavigate();
     const location = useLocation();
+
+
+    // On scroll initial Y position
+    let prevScrollpos = window.scrollY;
+
+
+    // On scroll
+    window.addEventListener('scroll', () => {
+        let currentScrollPos = window.scrollY;
+
+        if (prevScrollpos > currentScrollPos) {        
+            if (document.getElementById("background_menu")) {
+                document.getElementById("background_menu").style.top = '0';    
+            }
             
+            if (document.getElementById("div-main")) {
+                document.getElementById("div-main").style.top = '4rem'    
+            }        
+
+            if (document.getElementById("div-element-bar")) {
+                document.getElementById("div-element-bar").style.top = '7.5rem'    
+            }        
+
+        } else {      
+            if (document.getElementById("background_menu")) {
+                document.getElementById("background_menu").style.top = '-4rem';
+            }
+
+            if (document.getElementById("div-main")) {
+                document.getElementById("div-main").style.top = '0rem'
+            }
+                    
+            if (document.getElementById("div-element-bar")) {
+                document.getElementById("div-element-bar").style.top = '3.5rem'    
+            }        
+        }
+
+        prevScrollpos = currentScrollPos;
+    });
+
     
     /* Use Effect */
     useEffect(() => {        
         onClickBtnMainMenu(location.pathname);
     })
         
-    
 
+    
     /* Return */
     return (
         <>
             <div id="div-main" style={{top:'4rem'}}>
                 <div className="navbar" style={{padding:0}}>
                     <ButtonCss
-                        onClick={() => navigate('/evaluations')}
+                        onClick={() => navigate('/evaluations-page')}
                         children="Evaluations"
                         style={style}
-                        value="Evaluations"                        
+                        dataPage="/evaluations-page"
+                        value="Evaluations"
                     />
                     
-                    <ButtonCss                        
+                    <ButtonCss
                         children="Companies"
+                        onClick={() => navigate('/companies-page')}
+                        dataPage="/companies-page"
                         style={style}
                         value="Companies"
                         className='btnMainMenu'

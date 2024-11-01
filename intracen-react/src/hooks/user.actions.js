@@ -16,7 +16,6 @@ function useUserActions() {
     function login(data) {
         return axios
             .post(`${baseURL}/auth/login/`, data)
-
             .then((res) => {                
                 setUserData(res);
                 navigate("/element")

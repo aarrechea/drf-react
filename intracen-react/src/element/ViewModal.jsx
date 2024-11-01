@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import axiosService from "../helpers/axios";
 import { changeAdditionalColor } from "./various";
 import "./css/viewModal.css";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,6 +11,8 @@ import "./css/viewModal.css";
 const ViewModalProcess = (props) => {    
     /* Props */
     const {showViewModal, setShowViewModal} = props;
+
+    const navigate = useNavigate();
 
 
     /* Refs */
@@ -40,6 +43,9 @@ const ViewModalProcess = (props) => {
                 btnDefinitions.current.style.fontWeight = 'bold';
 
                 process = data;
+            })
+            .catch(() => {
+                navigate("/");
             })
     }
 

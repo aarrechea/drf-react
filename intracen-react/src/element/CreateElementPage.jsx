@@ -1,378 +1,251 @@
 /* Imports */
-import React, {useRef, useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import { SelectLetter, FixedBar, ElementComment, ElementName, 
     Definitions, Assess } from "./CreateElement";
 import { getUser } from "../hooks/user.actions";
-import { countRows, messageTimeout, resetAfterCreate, checkedInputRadio,
-    enabledDisabledRadioButton } from "./various";
-import { useLocation } from "react-router-dom";
+import { messageTimeout, enabledDisabledRadioButton } from "./various";
+import { useLocation, useNavigate } from "react-router-dom";
 import axiosService from "../helpers/axios";
 import "./css/createElementPage.css"
 
 
 
 /* Create element page */
-const CreateElementPage = () => {
-    /* Ref */
-    const divCreate3 = useRef();
-    const divCreate4 = useRef();
-    const lblDef = useRef();
-    const lblAssess = useRef();    
-
-
+const CreateElementPage = () => {    
     /* Constants */
     const user = getUser();
-    const location = useLocation(); // location.state has the public_id element
-
-
-    /* Variables */
-    let elementsValues = [];    
+    const location = useLocation(); // location.state has the element to edit
+    const navigate = useNavigate();
 
 
     /* States */    
-    const [elementType, setElementType] = useState(1);
-    const [characters, setCharacters] = useState();
+    const [elementType, setElementType] = useState(1);    
     const [display, setDisplay] = useState({
         name: false,
         comments: false,
         def: false,
         assess:false
+    });        
+    const [children, setChildren] = useState({
+        mode:'Create',
+        type:1
     });
-    const [defSymQue, setDefSymQue] = useState({
-        definitions: '',
-        symptoms: '',
-        questions: '',
-        radioChecked: 'definitions'
+    const [dataToSend, setDataToSend] = useState({
+        letter:1,
+        name:'',
+        comments:'',
+        definitions:'',
+        symptoms:'',
+        questions:'',
+        assess_one:'',
+        assess_two:'',
+        assess_three:'',
+        assess_four:'',
+        assess_five:'',
+        user_creator:user.id,
+        element_type: elementType
     });
-    const [assess, setAssess] = useState({
-        assessOne: '',
-        assessTwo: '',
-        assessThree: '',
-        assessFour: '',
-        assessFive: ''
-    })
-    const [assessInput, setAssessInput] = useState('assessOne');
-    const [blurComponent, setBlurComponent] = useState('');        
-    const [children, setChildren] = useState('Create');
-    const [letter, setLetter] = useState(null);
-    const [name, setName] = useState('');
-    const [comments, setComments] = useState('');
-    const [txtDefinitions, setTxtDefinitions] = useState('');
-    const [textAssess, setTextAssess] = useState('');    
-    
 
-    /* Put data in states and html elements */
-    const PutData = (data) => {
-        setChildren(() => 'Edit');
-        setLetter(() => data.letter);
-        setName(() => data.name);
-        setComments(() => data.comments);
 
-        checkedInputRadio('type', data.element_type);        
+    // Clean fields put the state with the data to send empty
+    function fcnCleanFields(e) {
+        setDataToSend({
+            letter:1,
+            name:'',
+            comments:'',
+            definitions:'',
+            symptoms:'',
+            questions:'',
+            assess_one:'',
+            assess_two:'',
+            assess_three:'',
+            assess_four:'',
+            assess_five:'',
+            user_creator:user.id,
+            element_type:e.target.value
+        })
+    }
 
-        if (parseInt(data.element_type) === 3) {
 
-            divCreate3.current.style.display = 'block';
-            divCreate4.current.style.display = 'block';
+    // Function to paint the element type button upon selection
+    function fcnPaintButtonElementType(e, class_name) {        
+        document.querySelectorAll(`.${class_name}`).forEach(function(item) {
+            if (item.value === e.target.value) {
+                item.style.background = "radial-gradient(white 60%, var(--green_60))";
 
-            checkedInputRadio('type', data.element_type);
-            checkedInputRadio('definitions', 1);
-            checkedInputRadio('assess', 1);
+            } else {
+                item.style.background = "white";
+            }
+        });
+    };
 
-            setTxtDefinitions(() => data.definitions);
-            setTextAssess(() => data.assess_one);
 
-            setDefSymQue(prevState => {
-                return {
-                    ...prevState,
-                    definitions:data.definitions,
-                    symptoms:data.symptoms,
-                    questions:data.questions
-                }
-            });                
-            
-            setAssess(() => {
-                return {                    
-                    assessOne:data.assess_one,
-                    assessTwo:data.assess_two,
-                    assessThree:data.assess_three,
-                    assessFour:data.assess_four,
-                    assessFive:data.assess_five
-                }
-            });                                                
+    // To show or hide additional fields wether it is process or not
+    function fcnShowProcessFields(e) {
+        if (parseInt(e.target.value) === 3) {
+            document.getElementById("div-definitions").style.display = "grid";
+            document.getElementById("div-assess").style.display = "grid";
 
         } else {
-            divCreate3.current.style.display = 'none';
-            divCreate4.current.style.display = 'none';   
+            document.getElementById("div-definitions").style.display = "none";
+            document.getElementById("div-assess").style.display = "none";
+        }   
+    };
 
-            setDisplay(() => {
-                return {
-                    def:false,
-                    assess:false,
-                }
-            });                              
-        }
+
+    // Join of all functions that have to be executed when an element type button is pressed
+    function fcnButtonClick(e, class_name) {
+        fcnCleanFields(e);
+        fcnPaintButtonElementType(e, class_name);
+        fcnShowProcessFields(e);
+        setElementType(() => e.target.value);
+    };
+
+
+    /* Put data in states and html elements when in edit mode */
+    const PutData = (data) => {
+        setDataToSend(prev => {
+            return {
+                ...prev,
+                letter:data.letter,
+                name:data.name,
+                comments:data.comments,
+                definitions:data.definitions,
+                symptoms:data.symptoms,
+                questions:data.questions,
+                assess_one:data.assess_one,
+                assess_two:data.assess_two,
+                assess_three:data.assess_three,
+                assess_four:data.assess_four,
+                assess_five:data.assess_five,
+                user_creator:data.user.id,
+                element_type:data.element_type
+            }
+        });
     }
-    
-
-    /* Get object with public id from location.state */    
-    const GetObject = useCallback(() => {             
-        axiosService
-            .get(`/element/${location.state}`)
-
-            .then(res => res.data)
-            .then((data) => {
-                PutData(data);
-            })
-
-            .catch((error) => {
-                console.log("Error: " + error);
-            })
-    }, [location.state]);
     
 
     /* First loading. If location.state is null, it is create, if not, is edit */
     useEffect(() => {
-        if (location.state === null) {
-            checkedInputRadio('type', 1);
-            setChildren(() => 'Create');
-            setLetter(() => '1');            
+        if (location.state.mode === 'create') {            
+            setChildren((prev) => {
+                return {
+                    ...prev,
+                    mode:'Create',                    
+                }                
+            });
 
-        } else {          
-            GetObject();          
-        }
-    }, [GetObject, location.state])
-
-
-    /* Enabled of disabled element radio button depends on if it's create or edit */
-    enabledDisabledRadioButton(children);
-        
-
-    /* Handle click - If process is clicked, it shows corresponding divs */
-    function HandleClick(e, radioValue) {        
-        // If element is process, I have to show definitions and assess, and reset the
-        // correspondant states values
-        if (e.target.title === 'Process') {
-            divCreate3.current.style.display = 'block';
-            divCreate4.current.style.display = 'block';
+            document.getElementById("div-definitions").style.display = "none";
+            document.getElementById("div-assess").style.display = "none";
 
         } else {
-            divCreate3.current.style.display = 'none';
-            divCreate4.current.style.display = 'none';
-
-            setDisplay({def:false});
-            setDisplay({assess:false});
-        }                
-
-        setDefSymQue({
-            definitions: '',
-            symptoms: '',
-            questions: '',
-            radioChecked: 'definitions'
-        });
-
-        setAssess({
-            assessOne: '',
-            assessTwo: '',
-            assessThree: '',
-            assessFour: '',
-            assessFive: ''
-        })
-        setAssessInput('assessOne');
-
-        document.getElementById('txtDef').value = '';
-        document.getElementById('txtAssess').value = '';
-
-        setElementType(radioValue);
-    }
-    
-    /* Handle focus */        
-    const HandleFocus = (e) => {
-
-        console.log("Enter handle focus");
-
-        let charCount = 0;
-        const htmlElement = e.target;        
-                        
-        if (htmlElement.id === 'elementName') {
-            setName(() => htmlElement.value);
-            setDisplay({name:true});   
-            charCount = name.length
-
-        } else if (htmlElement.id === 'txt-create-comments-element') {
-            setComments(() => htmlElement.value);
-            setDisplay({comments:true});
-            charCount = comments.length
-
-        } else if (htmlElement.id === 'txtDef') {            
-            setBlurComponent(htmlElement.getAttribute('data-blur'));
-            setDisplay({def:true});            
-
-            charCount = txtDefinitions.length;
-
-        } else {            
-            setBlurComponent(htmlElement.getAttribute('data-blur'));
-            setDisplay({assess:true});
-            charCount = textAssess.length
-        }                
-
-        //setCharacters(htmlElement.getAttribute('maxLength') - htmlElement.value.length);
-        setCharacters(htmlElement.getAttribute('maxLength') - charCount);
-    }
-
-
-    /* Handle blur */
-    const HandleBlur = (e) => {
-        const htmlElement = e.target;        
-
-        if (htmlElement.id === 'elementName') {
-            setDisplay({name:false});
-        } else if (htmlElement.id === 'txt-create-comments-element') {
-            setDisplay({comments:false});
-        } else if (htmlElement.getAttribute('data-blur') !== 'def' && blurComponent === 'def') {
-            setBlurComponent('');
-            setDisplay({def:false});
-        } else if (htmlElement.id !== 'txtAssess' && blurComponent === 'assess') {
-            setBlurComponent('');
-            setDisplay({assess:false});            
-        }
-    }
-
-
-    /* Handle input */
-    const HandleInput = (e) => {
-        let numberChars = 0;
-        const htmlElement = e.target;
+            PutData(location.state);
+            setChildren((prev) => {
+                return {
+                    mode:'Edit',
+                    type:location.state.element_type
+                }
                 
-        if (htmlElement.id !== "elementName") {
-            const charPerRowsVector = [70, 80, 70];
-            const rowsVector = [5, 30, 20];
+            });
 
-            let rows = rowsVector[0];
-            let characters = charPerRowsVector[0];
-            let lines = 0;
-            
-            if(htmlElement.id === 'txtDef') {
-                characters = charPerRowsVector[1];
-                rows = rowsVector[1];
-            } else if (htmlElement.id === 'txtAssess') {
-                characters = charPerRowsVector[2];
-                rows = rowsVector[2];
+
+            if(parseInt(location.state.element_type) === 3) {
+                document.getElementById("div-definitions").style.display = "grid";
+                document.getElementById("div-assess").style.display = "grid";
+            } else {
+                document.getElementById("div-definitions").style.display = "none";
+                document.getElementById("div-assess").style.display = "none";
             }
 
-            lines = countRows(htmlElement, characters);
+            window.scroll(0, 0);
+        }
 
-            if (lines > rows) {
-                htmlElement.value = htmlElement.value.substring(0, htmlElement.value.length - 1);
-            }            
-        } 
-        
-        if(htmlElement.id === 'elementName') {
-            setName(() => htmlElement.value);
-            numberChars = name.length;
+    }, [location.state])
 
-        } else if (htmlElement.id === 'txt-create-comments-element') {
-            setComments(() => htmlElement.value);
-            numberChars = comments.length;
 
-        } else if (htmlElement.id === 'txtDef') {
-            setTxtDefinitions(() => htmlElement.value);
-            numberChars = txtDefinitions.length;
+    /* Enabled or disabled element radio button depends on if it's create or edit */
+    enabledDisabledRadioButton(children);
 
-        } else if (htmlElement.id === 'txtAssess') {
-            setTextAssess(() => htmlElement.value);
-            numberChars = textAssess.length;
-        }        
 
-        //setCharacters(() => htmlElement.getAttribute('maxLength') - htmlElement.value.length);
-        setCharacters(() => htmlElement.getAttribute('maxLength') - numberChars);
-    }
+    // Reset the fields after create a new element. Also reset dataToSend state
+    function fcnResetAfterCreate(){
+        document.querySelectorAll(".elementToSend").forEach(function(item){
+            if(item.type === 'select-one'){
+                item.value = 1;
+            } else {
+                item.value = "";
+            }
+        });
 
-            
+        setDataToSend(prev => {
+            return {
+                ...prev,
+                letter:1,
+                name:"",
+                comments:"",
+                definitions:"",
+                symptoms:"",
+                questions:"",
+                assess_one:"",
+                assess_two:"",
+                assess_three:"",
+                assess_four:"",
+                assess_five:"",
+                user_creator:user.id,
+                element_type:elementType
+            }
+        });
+    };
+
+
+          
     /* Handle submit */
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const createElementForm = event.currentTarget;                
+    const handleSubmit = (event) => {        
+        if(dataToSend.name.length < 3) {
+            messageTimeout("The name has to have at least three characters", 'red');
+            return;
+        }
 
-
-        if(createElementForm.checkValidity() === false) {
-            event.stopPropagation();
-        }        
-
-
-        /* Filling the list with the values to be sent in axios post */
-        elementsValues = [];
-        elementsValues.push(elementType);
-        document.querySelectorAll('.elementToSend').forEach(function(element) {
-            if(element.value === '') {
-                element.value = 'None';
+        // newData is the new object to send to the backend. It has the same fields than
+        // dataToSend, but with the empty fields filled with the word "None"
+        let newData = {};
+        Object.entries(dataToSend).forEach(function([key, value]) {            
+            if(value === "") {
+                newData[key] = "None";
+            } else {
+                newData[key] = value;
             }
-
-            elementsValues.push(element.value);
-        });
+        });                        
         
 
-        /* Loop over dictionaries to fill the blanks with "None" */
-        Object.entries(defSymQue).forEach(([key, value]) => {
-            if(value === '') {                
-                defSymQue[key] = "None";
-            }
-        });
-
-        Object.entries(assess).forEach(([key, value]) => {
-            if(value === '') {                
-                assess[key] = "None";
-            }
-        });
-
-
-        /* Save values in a json format to be sent with axios */
-        const data = {
-            user_creator: user.id,
-            element_type: elementsValues[0].toString(),
-            letter: elementsValues[1],
-            name: elementsValues[2],
-            comments: elementsValues[3],
-            definitions: defSymQue['definitions'],
-            symptoms: defSymQue['symptoms'],
-            questions: defSymQue['questions'],
-            assessOne: assess['assessOne'],
-            assessTwo: assess['assessTwo'],
-            assessThree: assess['assessThree'],
-            assessFour: assess['assessFour'],
-            assessFive: assess['assessFive'],
-        };        
-        console.log("data: " + JSON.stringify(data));
-
-
-        /* Axios */
-        if (children === 'Create') {
+        // Create or edit the element with the information in dataToSend state
+        if (children.mode === 'Create') {            
             axiosService
-                .post("/element/", data)
-
-                .then((res) => {                
-                    messageTimeout('Element succesfully created');
-                    resetAfterCreate();
-
-                    //console.log("response: " + JSON.stringify(res));                
+                .post("/element/", newData)
+                .then((res) => {                    
+                    window.scroll(0, 0);
+                    messageTimeout('Element succesfully created', 'green');
+                    fcnResetAfterCreate();                    
                 })
-
                 .catch((error) => {
                     console.log("Error: " + error);
+                    navigate("/");
                 });
 
         // if it is edit
-        } else {
+        } else {            
             axiosService
-                .put(`/element/${location.state}/`, data)
-
+                .put(`/element/${location.state.id}/`, newData)
                 .then(res => res.data)
                 .then((data) => {
-                    GetObject();
+                    window.scroll(0, 0);             
+                    PutData(data);
+                    messageTimeout('Element succesfully edited', 'green');
                 })
 
                 .catch((error) => {
                     console.log("Error: " + error);
+                    navigate("/");
                 })
         }
     }
@@ -381,7 +254,13 @@ const CreateElementPage = () => {
     /* Return */
     return (
         <>
-            <FixedBar click={HandleClick} submit={handleSubmit} children={children}/>
+            <FixedBar
+                submit={handleSubmit}
+                children={children}
+                fcnCleanFields={fcnCleanFields}
+                dataToSend={dataToSend}
+                fcnButtonClick={fcnButtonClick}
+            />
 
 
             <div id="div-create-message">
@@ -391,96 +270,54 @@ const CreateElementPage = () => {
 
             {/* Letter and element name */}
             <div id="div-create-1">
-                <label htmlFor="select-letter-create-element">Letter</label>
-                <label htmlFor="elementName">Name
-                    <label                         
-                        id="lblName" 
-                        style={{display: display.name ? 'inline' : 'none'}}
-                    >
-                        {characters}
-                    </label>
-                </label>
-
-                <SelectLetter letter={letter}/>
+                <div id="div-create-1-select">
+                    <label htmlFor="select-letter-create-element">Letter</label>                
+                    <SelectLetter
+                        dataToSend={dataToSend}
+                        setDataToSend={setDataToSend}
+                    />
+                </div>
+                
 
                 <ElementName 
-                    focus={HandleFocus} 
-                    blur={HandleBlur} 
-                    input={HandleInput}
-                    name={name}
+                    dataToSend={dataToSend}
+                    setDataToSend={setDataToSend}
+                    display={display}
+                    setDisplay={setDisplay}
                 />
             </div>
 
 
-            {/* Element comments */}
-            <div id="div-create-2">
-                <label htmlFor="txt-create-comments-element">Comments
-                    <span                         
-                        id="spnCharComments" 
-                        style={{display: display.comments ? 'inline' : 'none'}}
-                    >
-                        {characters}
-                    </span>
-                </label>
-
-                <ElementComment
-                    focus={HandleFocus}
-                    blur={HandleBlur}
-                    input={HandleInput}
-                    comments={comments}
-                />
-            </div>
+            {/* Element comments */}            
+            <ElementComment
+                dataToSend={dataToSend}
+                setDataToSend={setDataToSend}
+                display={display}
+                setDisplay={setDisplay}
+            />
+            
+            
+            {/* Definitions, symptoms, and questions */}            
+            <Definitions
+                dataToSend={dataToSend}
+                setDataToSend={setDataToSend}
+                fcnPaintButtonElementType={fcnPaintButtonElementType}
+                display={display}
+                setDisplay={setDisplay}
+            />
             
 
-            {/* Definitions, symptoms, and questions */}
-            <div id="div-create-3" ref={divCreate3}>
-                <div>
-                    <label 
-                        ref={lblDef}
-                        style={{display: display.def ? 'inline' : 'none', textAlign:'center'}}
-                        id="lbl-characters"
-                    >
-                        {characters}
-                    </label>
-                </div>
+            {/* Assess */}            
+            <Assess                     
+                dataToSend={dataToSend}
+                setDataToSend={setDataToSend}                
+                fcnPaintButtonElementType={fcnPaintButtonElementType}
+                display={display}
+                setDisplay={setDisplay}
+            />
+            
 
-                <Definitions
-                    txtDefinitions={txtDefinitions}
-                    setTxtDefinitions={setTxtDefinitions}
-                    blur={HandleBlur}
-                    input={HandleInput}
-                    focus={HandleFocus}
-                    defSymQue={defSymQue}
-                    setDefSymQue={setDefSymQue}
-                    lblDefinitions={HandleFocus}                    
-                />
-            </div>
-
-
-            {/* Assess */}
-            <div id="div-create-4" ref={divCreate4}>
-                <div>
-                    <label 
-                        ref={lblAssess}
-                        style={{display: display.assess ? 'inline' : 'none', textAlign:'center'}}
-                        id="lbl-characters-assess"
-                    >
-                        {characters}
-                    </label>
-                </div>
-
-                <Assess                     
-                    textAssess={textAssess}
-                    setTextAssess={setTextAssess}
-                    assess={assess}
-                    setAssess={setAssess}
-                    assessInput={assessInput}
-                    setAssessInput={setAssessInput}
-                    blur={HandleBlur}
-                    input={HandleInput}
-                    focus={HandleFocus}                    
-                />
-            </div>            
+            <p className="createElementPageSeparator"/>
         </>        
     )    
 }

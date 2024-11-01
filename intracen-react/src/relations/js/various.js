@@ -1,46 +1,8 @@
-/* Go backwards in the list of objects to find a type of element defined in 
-    the variable 'type'.
-*/
-function fcnGoBackward(actualValue, table, type) {
-    let letterArray = [];
-    let x, letter, letter_display;
-
-    for (x = actualValue - 1; x >= 0; x--) {
-        if (parseInt(table[x].element_type) === type) {
-            letter = table[x].letter;
-            letter_display = table[x].letter_display;
-            break;
-        }
-    }
-
-    letterArray.push(x);
-    letterArray.push(letter);
-    letterArray.push(letter_display);
-
-    return letterArray;
-}
-
-function fcnGoForward(tableLength, dataArray, table, type) {
-    let counter = 1;    
-
-    for (let j = dataArray[0]+1; j < tableLength; j++) {
-        if (parseInt(table[j].element_type) === type) {
-            table[j].capability_number = counter;
-            table[j].letter = dataArray[1];
-            table[j].letter_display = dataArray[2];
-            counter += 1;
-        } else {
-            break;
-        }
-    }
-}
-
 /* Count competences in the table */
 function fcnElementCount(table, type) {
     let count = 1
 
-
-    console.log("new table in element count: " + JSON.stringify(table));
+    //console.log("new table in element count: ", JSON.stringify(table.newTable));
 
     if(Object.keys(table).length > 0){
         table.forEach(element => {
@@ -70,49 +32,107 @@ function fcnChangePercentage(table, type, percentage){
 }
 
 
-/* Reorder the table if an element was inserted in between other elements */
-function fcnReorderLetterTable(table, type, letters, actualValue, valueSelected) {        
-    let counter = 1;
-    let dataArray = [];
+/* Puting letters after an insert of a new row */
+function fcnPutLetters(newTable, letters) {
+    let lettersIndex = 1;
 
-    console.log("Table lentgh inside reorder letter: " + JSON.stringify(table));
-
-    const TABLE_LENGTH = Object.keys(table).length;
-    
-
-    // if it is competence, I reorder letters
-    if (TABLE_LENGTH > 0) {
-        table.forEach((row) => {
-
-            console.log("Enter for each - row: " + JSON.stringify(row));
-            console.log("type: " + type + " - counter: " + counter);
-            console.log("letter in counter: " + letters);
-            
-
-            if (parseInt(type) === 1) {
-                row['letter'] = counter;
-                row['letter_display'] = letters[counter];
-                counter += 1;
-            } 
-        })        
-        
-
-        //console.log("type: " + type + " - actual value: " + actualValue + " - length: " + TABLE_LENGTH);
-
-        // If it is capability
-        if (parseInt(type) === 2 && actualValue <= TABLE_LENGTH) {
-            // Move backward to find the competence        
-            dataArray = fcnGoBackward(actualValue, table, 1);
-
-            // Move forward to assign letter and numbers to a type defined y the parameter
-            fcnGoForward(TABLE_LENGTH, dataArray, table, 2);        
-
-        } else if (actualValue === TABLE_LENGTH) {
-            /* console.log("Enter actual value = tableLength");
-            console.log("value selected: " + valueSelected + " - Actual value: " + actualValue);
-            console.log("Table length: " + TABLE_LENGTH);
-            console.log("table: " + JSON.stringify(table)); */
+    newTable.forEach((row, i) => {        
+        if(parseInt(row.element_type) === 1 && i > 0) {
+            lettersIndex += 1;            
         }
+
+        row['relation_letter'] = lettersIndex;
+        row['relation_letter_display'] = letters[lettersIndex];        
+    })
+}
+
+/* Recalculate percentages after row was inserted in the new table */
+function fcnPercentageCompetences(newTable) {
+    let counter = 0, percentage = 0
+
+    newTable.forEach((row) => {
+        if(parseInt(row.element_type) === 1) {
+            counter += 1;
+        }
+    });
+
+    percentage = (100 / counter).toFixed(2);
+
+    newTable.forEach((row) => {
+        if(parseInt(row.element_type) === 1) {
+            row.percentage = percentage;
+        }
+    });    
+}
+
+
+/* Calculate the percentage for capabilities and processes - Put numbers too */
+function fcnPercentageCapPro(newTable, elementType) {
+    let rowNumber = 0 // will be the row to start loop over to put the percentages.
+    let counter = 0 // numbers of elements founded
+    let rows = 0 // number or rows run
+    let percentage = 0
+    let flag = false
+    let x = 0
+    let order_number = 1; // to put the capability and process number
+    const parent_element = parseInt(elementType - 1);
+    const tableLength = Object.keys(newTable).length;
+
+    while (rowNumber < tableLength) {
+        x = rowNumber; // starting in zero
+
+        // loop over the table until I found the element type. Add one unit to the counter
+        while(x < tableLength) {            
+            if(parseInt(newTable[x].element_type) === elementType) {
+                flag = true;
+                counter += 1;
+        
+            } else if (flag === true && parent_element === parseInt(newTable[x].element_type)) {
+                break;
+            }
+
+            x += 1;
+            rows += 1;
+        }
+
+        // I use the counter to calculate the percentage, and a reference to advance the for loop
+        // until the end of the elements found, because the counter counted the element in the previous
+        // while loop.
+        // I assign x to rowNumber to not repeat the analisys in the same rows.
+        if (flag === true) {
+            flag = false;
+            percentage = (100 / counter).toFixed(2);
+            x = rowNumber;            
+            order_number = 1;
+
+            for (let y = 0; y < rows; y++) {
+                if (parseInt(newTable[x].element_type) === elementType) {
+                    newTable[x].percentage = percentage;
+
+                    if (elementType === 2) {
+                        newTable[x].capability_number = order_number;
+                        newTable[x].process_number = '-';
+                        order_number += 1;
+
+                    } else if (elementType === 3) {
+                        newTable[x].process_number = order_number;
+                        newTable[x].capability_number = '-';
+                        order_number += 1;
+                    }
+                }
+                
+                x += 1;
+
+                if (x >= tableLength) break;
+            }
+
+            counter = 0;
+            percentage = 0;
+            rowNumber += rows;
+            rows = 0;
+        }
+        
+        rowNumber += 1;
     }
 }
 
@@ -122,8 +142,10 @@ function fcnReorderLetterTable(table, type, letters, actualValue, valueSelected)
 export {
     fcnElementCount,
     fcnPercentage,
-    fcnChangePercentage,
-    fcnReorderLetterTable
+    fcnChangePercentage,    
+    fcnPercentageCompetences,
+    fcnPercentageCapPro,
+    fcnPutLetters,
 }
 
 

@@ -1,10 +1,12 @@
 /* Imports */
-import React, { useState, useEffect, useRef } from "react";
-import { ElementTable, FixedBar, NewTable, OptionBar } from "./CreateRelation";
-import { fcnChangePercentage, fcnElementCount, fcnPercentage } from "./js/various";
+import React, { useCallback, useEffect, useState } from "react";
+import { FixedBar, OptionBar } from "./CreateRelation";
 import useSWR from "swr";
-import { fetcher } from "../helpers/axios";
-import DataContext from "./store/DataContext";
+import axiosService, { fetcher } from "../helpers/axios";
+import {DataContext} from "./store/DataContext";
+import FirstTable from "./TableOne";
+import NewTable from "./NewTable";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 
@@ -15,126 +17,181 @@ const CreateRelationPage = () => {
         refreshInterval: 10000,
     });
 
+    /* useLocation with the mode = edit and the element id to be edited */
+    const location = useLocation();
 
-    // Variables
-    let extendedRow = useRef({});
-    let row = useRef({});
+    const navigate = useNavigate();
 
-
+    
     /* States */
-    const [originalRow, setOriginalRow] = useState({});
-    const [newTable, setNewTable] = useState([]);    
+    const [row, setRow] = useState({});    
+    const [contextData, setContextData] = useState({
+        newTable:[]
+    })
     const [valueSelected, setValueSelected] = useState(0);
     const [actualValue, setActualValue] = useState(0);
     const [ordered, setOrdered] = useState(true);
-    
+    const [hideRows, setHideRows] = useState([]);
+    const [relationName, setRelationName] = useState('');
+    const [mode, setMode] = useState('Create');
 
-
-    // Extended row takes the original row, and adds some additional data
-    function createExtendedRow() {
-        /* Variables */
-        let percentageRow = 0;
-        let order = 1
-        let capability_number = 1;
-        let process_number = 1;
-        let tableLength = 0;
-        let elementCount = 0;            
+    // state to contain the relation id to be edited that comes from the relation card
+    const [id, setId] = useState(null);
     
     
-        // Constants
-        const type = parseInt(originalRow.element_type);
-    
-    
-        if(Object.keys(newTable).length > 0) {
-            tableLength = Object.keys(newTable).length;
-        }
-
-        
-        // Count competences in the new table
-        elementCount = fcnElementCount(newTable, type);
-    
-        // Assign percentages to each competence depending on the counting
-        percentageRow = fcnPercentage(elementCount);
-        fcnChangePercentage(newTable, 1, percentageRow);
-    
-        // if the row needs to be inserted in the middle, I move the next elements
-        // one position. If not (else), just assign valueSelected to order field.
-        if (tableLength > 0 && actualValue < tableLength) {            
-            for (let x = actualValue; x < tableLength; x++) {
-                newTable[x].order = newTable[x].order + 1;
-            }
-    
-            order = parseInt(actualValue) + 1;
-            setOrdered(false); // to send the signal to be ordered
-    
-        } else {
-            order = valueSelected;
-        }    
-    
-        if (type === 1) {
-            capability_number = "-";
-            process_number = "-";
-        } else if (type === 2) {
-            process_number = "-"
-        }
-
-        return({
-            percentage:percentageRow,
-            order:order,
-            capability_number:capability_number,
-            process_number:process_number
-        })
-    }    
-
-        
-    if(Object.keys(originalRow).length > 0) {        
-        extendedRow.current = createExtendedRow();
-        row.current = {...originalRow, ...extendedRow.current};
-
-        setNewTable(prevState => {
-            return [{
-                ...prevState,
-                ...row.current
-            }]
+    function changeRelationName (name) {
+        setRelationName(prev => {
+            return name;
         });
+    }
+
+
+    // I take the row clicked in the new table out of the table one filtering by id
+    function setHideRowsUpdate(target) {
+        setHideRows(prev => {            
+            const newArray = prev.filter((item, index) => item !== target);
+            return newArray            
+        })
     }
     
     
+    function setNewTable (data) {
+        if (Object.keys(data).length > 0){
+            setContextData(prev => {
+                const updatedTable = [...prev.newTable, data];
+
+                return {
+                    newTable: updatedTable
+                }
+            })
+        }
+    }
+
+
+    // When the user want to edit the table, the newTable state is loaded with the 
+    // existing relation tree
+    function setNewTableForEdit (data) {
+        if (Object.keys(data).length > 0){
+            setContextData(prev => {
+                const updatedTable = data;                
             
-    console.log("row in relation page: " + JSON.stringify(row.current));
-    console.log("new table in relation page: " + JSON.stringify(newTable));
+                return {
+                    newTable: updatedTable
+                }
+            })
+        }
+    }
+
+    function setNewTableUpdate(targetIndex) {
+        setContextData(prev => {            
+            const newArray = prev.newTable.filter((item, index) => index !== parseInt(targetIndex));
+
+            return {
+                newTable: newArray
+            }
+        })
+    }    
     
+    function setNewTableOrderUpdate() {
+        setContextData(prev => {
+            const newArray = prev.newTable
+
+            for (let i = 0; i < newArray.length; i++) {
+                newArray[i]['order'] = i+1
+            }
+
+            return {
+                newTable: newArray
+            }
+        })
+    }
+
+    const ctxData = {
+        newTable: contextData.newTable,
+        setTable: setNewTable,
+        setTableUpdate: setNewTableUpdate,
+        setOrderUpdate: setNewTableOrderUpdate
+    };
+
+
+    const fcnSetHideRows = useCallback((data) => {
+        const public_id_array = [];
+
+        data.forEach(function(item)  {
+            public_id_array.push(item.public_id);
+        })        
+
+        return public_id_array;
+    }, [])
+
     
+    // If edit I have to hide in the first table, the elements already used in the new table.
+    useEffect(() => {        
+        if (location.state.mode === 'edit') {
+            axiosService            
+                .get(`/relations/${location.state.id}/get_object_tree/`)
+                .then(res => res.data)
+                .then((data) => {
+                    const id_array = fcnSetHideRows(data.data);
+                    setHideRows([...id_array]);
+
+                    setNewTableForEdit(data.data);
+                    setMode('Edit');
+                    setId(location.state.id)
+
+                    setRelationName(data.relation_name);
+                })
+                .catch((error) => {
+                    console.log("Error: " + error);
+                    navigate("/");
+                })            
+        }
+    }, [location.state.id, location.state.mode, fcnSetHideRows, navigate])
+
+
     if (!choices) return <h2>Loading...</h2>
 
     /* Return */
     return (
-        <DataContext.Provider value={newTable}>
-            <FixedBar/>
+        <DataContext.Provider value={ctxData}>
+            <FixedBar
+                relationName={relationName}
+                mode={mode}
+                setMode={setMode}
+                id={id}
+                setId={setId}
+            />
             
             <OptionBar                 
                 valueSelected={valueSelected} 
                 setValueSelected={setValueSelected}
-                setActualValue={setActualValue}
-                //table={newTable}                
+                setActualValue={setActualValue}                
             />
 
-            <ElementTable                
-                setValueSelected={setValueSelected}
-                setOriginalRow={setOriginalRow}
-                //table={newTable}
+            <FirstTable                
+                setValueSelected={setValueSelected}                
+                setRow={setRow}                
+                actualValue={actualValue}
+                setActualValue={setActualValue}
+                setOrdered={setOrdered}
+                hideRows={hideRows}
+                setHideRows={setHideRows}
+                mode={mode}
             />
             
             <NewTable                
                 valueSelected={valueSelected}
-                actualValue={actualValue}
+                setValueSelected={setValueSelected}
                 setActualValue={setActualValue}
                 ordered={ordered}
-                setOrdered={setOrdered}
-                //table={newTable}                
+                setOrdered={setOrdered}                
                 row={row}
                 choices={choices}
-            />
+                hideRows={hideRows}
+                setHideRowsUpdate={setHideRowsUpdate}
+                setRelationName={changeRelationName}
+                relationName={relationName}                
+            />            
         </DataContext.Provider>
     )
 }

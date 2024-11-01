@@ -37,7 +37,7 @@ function ElementBar({count, onSelectChange}) {
     return (        
         <div id="div-element-bar">
             <div id="div-element-bar-interior">
-                <Link id="btn-create-element" to="/create-element">Create<br/>element</Link>
+                <Link id="btn-create-element" state={{ mode: "create" }} to="/create-element/">Create<br/>element</Link>
                 
                 <label htmlFor="">Element type</label>
                 <label htmlFor="">Letter</label>

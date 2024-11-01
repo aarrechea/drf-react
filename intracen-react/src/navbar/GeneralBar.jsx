@@ -1,5 +1,5 @@
 /* Imports */
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { getUser } from "../hooks/user.actions";
 import "../colors.css"
 import "./generalBar.css"

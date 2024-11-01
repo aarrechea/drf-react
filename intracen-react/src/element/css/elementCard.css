@@ -6,13 +6,13 @@
     align-items: center;
     width: 100%;    
     padding: 1rem;
-    border: 2px solid green;
+    border: 2px solid var(--contrast_100);
     border-radius: 0.3rem;
-    box-shadow: 10px 8px 5px 0px rgba(0,0,0,0.2);
+    box-shadow: 10px 8px 5px 0px var(--contrast_20);
     background-color: white;
 }
     #div-card:hover {
-        background-image: radial-gradient(white 93%, green);
+        background-image: radial-gradient(white 95%, var(--contrast_100));
     }
 
 
@@ -40,7 +40,7 @@
 }
     #div-card-title label {
         font-style: italic;
-        color: green;
+        color: var(--contrast_100);
     }
 
     #div-card-title textarea {
@@ -63,7 +63,7 @@
 }
     #div-card-body :nth-child(1),
     #div-card-body :nth-child(3) {
-        color: green;
+        color: var(--contrast_100);
     }
 
 

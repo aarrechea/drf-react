@@ -6,7 +6,7 @@ import { getUser } from "../hooks/user.actions";
 import { countRows, messageTimeout, resetAfterCreate } from "./various";
 import axiosService from "../helpers/axios";
 import "./css/createElementPage.css"
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { checkedInputRadio } from "./various";
 
 
@@ -23,7 +23,8 @@ const UpdateElementPage = () => {
         
     /* Constants */
     const user = getUser();
-    const location = useLocation(); // to get data that comes with navigate from ElementCard.jsx    
+    const location = useLocation(); // to get data that comes with navigate from ElementCard.jsx 
+    const navigate = useNavigate();   
 
     //console.log("location: " + JSON.stringify(location.state));
 
@@ -283,7 +284,6 @@ const UpdateElementPage = () => {
         /* Axios */
         axiosService
             .post("/element/", data)
-
             .then((res) => {                
                 messageTimeout('Element succesfully created');
                 resetAfterCreate();
@@ -293,6 +293,7 @@ const UpdateElementPage = () => {
 
             .catch((error) => {
                 console.log("Error: " + error);
+                navigate("/");
             });
     }
 

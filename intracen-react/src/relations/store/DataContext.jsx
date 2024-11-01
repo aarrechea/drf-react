@@ -4,12 +4,14 @@ import { createContext } from "react";
 
 
 /* React component */
-const DataContext = createContext();
+export const DataContext = createContext({
+    newTable: [],
+    setTable: () => {},
+    setTableUpdate: () => {},    
+    setOrderUpdate: () => {}
+});
 
 
-
-/* exports */
-export default DataContext;
 
 
 

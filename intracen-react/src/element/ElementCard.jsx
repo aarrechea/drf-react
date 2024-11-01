@@ -10,26 +10,23 @@ import { getUser } from "../hooks/user.actions";
 /* Element card */
 function ElementCard(props) {
     /* Constants */
-    const {letter, name, element_type, eva_progress, eva_made, public_id, user_creator, setShowModal,
+    const {letter, name, element_type, eva_progress, eva_made, id, user_creator, setShowModal,
         setElementToDelete, setShowViewModal} = props;
     const navigate = useNavigate();
-    const user = getUser();
-    const userCreator = user_creator.replaceAll(/-/g, '');
-        
+    const user = getUser();    
+    
 
     /* Handle edit click */
     const HandleEditClick = () => {
         /* Axios */
         axiosService
-            .get("/element/" + public_id)
-
-            .then((res) => {
-                //navigate("/update-element", {state:res.data});
-                navigate("/create-element", {state:res.data.public_id});
+            .get(`/element/${id}`)
+            .then((res) => {                
+                navigate("/create-element", {state:res.data});
             })
-
             .catch((error) => {
                 console.log("Error: " + error);
+                navigate("/");
             });
     };
 
@@ -42,7 +39,7 @@ function ElementCard(props) {
                 element_type:element_type,
                 letter:letter,
                 name:name,
-                public_id:public_id
+                public_id:id                
             }
         });
     };
@@ -53,7 +50,7 @@ function ElementCard(props) {
         setShowViewModal(() => {
             return {
                 display:'grid',
-                public_id:public_id
+                public_id:id                
             }
         });
     };
@@ -90,13 +87,22 @@ function ElementCard(props) {
                         <button className="btn-disabled" disabled>View</button>
                 }
 
-                {eva_made === 0 && userCreator.localeCompare(user.id) === 0
+                {eva_made === 0 && user_creator === user.id
                     ?                        
                         <>                            
-                            <button className="btn-enabled" onClick={HandleEditClick}>Edit</button>
+                            <button 
+                                className="btn-enabled" 
+                                onClick={HandleEditClick}
+                            >
+                                    Edit
+                            </button>
+                            
                             <button 
                                 className="btn-enabled btn-delete" 
-                                onClick={HandleShowModal}>Delete</button>
+                                onClick={HandleShowModal}
+                            >
+                                Delete
+                            </button>
                         </>                    
                     :
                         <>

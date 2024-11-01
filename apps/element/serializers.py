@@ -10,27 +10,25 @@ from apps.user.serializers import UserSerializer
 
 """ Element serializer """
 class ElementSerializer(AbstractSerializer):
-    user_creator = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='public_id')
+    #user_creator = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field='public_id')
     letter_display = serializers.CharField(source='get_letter_display', required=False)
     element_type_display = serializers.CharField(source='get_element_type_display', required=False)    
     
     
-    def validate_user_creator(self, value):                                                
-        if self.context['request'].user != value:
-            raise ValidationError("You can not create an element")
-        
+    def validate_user_creator(self, value):        
+        #print("validate user creator - value: ", value)                        
         return value
     
     
     def to_representation(self, instance):                        
-        rep = super().to_representation(instance)                                
-        user = User.objects.get_object_by_public_id(rep['user_creator'])                
+        rep = super().to_representation(instance)        
+        user = User.objects.get(id=rep['user_creator'])
         rep['user'] = UserSerializer(user).data
         
         return rep
 
     
-    def update(self, instance, validated_data):        
+    def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
         
         return instance

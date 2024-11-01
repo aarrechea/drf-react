@@ -5,7 +5,7 @@ from apps.user.models import User
 
 
 """ User serializer class """
-class UserSerializer(AbstractSerializer):    
+class UserSerializer(AbstractSerializer):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'user_type',
