@@ -17,6 +17,9 @@ function ButtonsBar({click}) {
     const user = getUser()    
     const style = {height:'2rem', backgroundColor: 'var(--brown_100)', 
                     fontSize: '1.0rem', borderWidth: '0', textAlign:'center'};
+    const styleDisabled = {height:'2rem', backgroundColor: 'var(--brown_100)',
+        fontSize: '1.0rem', borderWidth: '0', textAlign:'center', fontStyle:'italic'};
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -118,16 +121,16 @@ function ButtonsBar({click}) {
                             <>
                                 <ButtonCss                                    
                                     children="Users"
-                                    style={style}
+                                    style={styleDisabled}
                                     value="Users"
                                     className='btnMainMenu'
                                 />
                                 
                                 <ButtonCss                                     
                                     children="Administration"                                    
-                                    style={style}
+                                    style={styleDisabled}
                                     value="Administration"
-                                    className='btnMainMenu'
+                                    className='btnMainMenu'                                    
                                 />
                             </>
                         : null
@@ -141,7 +144,7 @@ function ButtonsBar({click}) {
 
                     <ButtonCss                        
                         children="Reset password"
-                        style={style}
+                        style={styleDisabled}
                         value="Reset password"
                     />            
                 </div>

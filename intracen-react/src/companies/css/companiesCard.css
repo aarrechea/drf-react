@@ -12,16 +12,17 @@
     column-gap: 1rem;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
+    margin: 0.5rem auto 0.5rem auto;
     width: 70%;
     height: 10rem;
     border: 1px solid black;
     border-radius: 3%;
     padding: 1rem;
+    box-shadow: 10px 8px 5px 0px var(--contrast_20);
 }
 
 #divCompanyCard:hover {
-    border: 2px solid green;
+    border: 3px solid var(--contrast_100);
 }
 
     #divCompanyCardLabels {

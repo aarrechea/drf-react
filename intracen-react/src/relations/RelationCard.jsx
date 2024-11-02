@@ -79,7 +79,13 @@ export const RelationCard = (props) => {
                 <div id="divRelationCardMainButtons">
                     <button onClick={handleViewClick}>View</button>
                     <button onClick={handleEditClick}>Edit</button>
-                    <button onClick={handleDeleteClick}>Delete</button>
+                    {in_progress > 0 || made > 0 
+                        ?
+                            <button disabled>Delete</button>
+                        :
+                            <button onClick={handleDeleteClick}>Delete</button>
+                    }
+                    
                 </div>
             </div>
 

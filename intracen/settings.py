@@ -1,5 +1,6 @@
 # Imports
 import os
+import django_heroku
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -216,6 +217,8 @@ CORS_ALLOWED_ORIGINS = [
 GEOIP_PATH = BASE_DIR / 'geoIp'
 
 
+# Django Heroku settings.
+django_heroku.settings(locals()) 
 
 
 

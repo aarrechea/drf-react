@@ -15,7 +15,7 @@
     align-items: center;
     text-align: center;
     padding: 1rem;
-    box-shadow: 2px 2px 5px blue;
+    box-shadow: 3px 3px 5px var(--contrast_100);
 }
 
     .mainDivs:last-child {

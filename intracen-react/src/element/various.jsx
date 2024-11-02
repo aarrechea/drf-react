@@ -27,7 +27,7 @@ function countRows(htmlElement, charPerRows)
 
 
 /* Div create message timeout */
-function messageTimeout(message, color) {    
+function messageTimeout(message, color) {
     document.getElementById("div-create-message").style.margin = '8rem auto 0 auto';
     document.getElementById("lbl-create-message").innerHTML = message;
     document.getElementById("lbl-create-message").style.color = color;

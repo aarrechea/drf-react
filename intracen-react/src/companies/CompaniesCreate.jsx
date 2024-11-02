@@ -4,7 +4,7 @@ import CreateEditBar from "../components/CreateEdit";
 import axiosService from "../helpers/axios";
 import "./css/companiesCreate.css";
 import { companyMessageTimeout, getNames, companyResetAfterCreate } from "./js/vaious.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../hooks/user.actions.js";
 
 
@@ -17,6 +17,8 @@ export const CompanyCreate = () => {
     const [superSector, setSuperSector] = useState([]);    
     const [sector, setSector] = useState([]);    
     const [subSector, setSubSector] = useState([]);
+
+    const navigate = useNavigate();
     
     /* Name */
     const nameRef = useRef();
@@ -158,7 +160,6 @@ export const CompanyCreate = () => {
         if (modeRef.current === 'Create') {
             axiosService
                 .post("/company/", data)
-
                 .then((res) => {                
                     companyMessageTimeout('Company succesfully created');
                     companyResetAfterCreate();
@@ -182,23 +183,22 @@ export const CompanyCreate = () => {
                     const lstSubsector = fcnGenerateData('subsector', 'sector', position, lstSector);
                     setSubSector(lstSubsector);   
                 })
-
                 .catch((error) => {
                     console.log("Error: " + error);
+                    navigate("/")
                 });
 
         // if it is edit
         } else {
             axiosService
                 .put(`/company/${location.state}/`, data)
-
                 .then(res => res.data)
                 .then((data) => {
                     //GetObject();
                 })
-
                 .catch((error) => {
                     console.log("Error: " + error);
+                    navigate("/")
                 })
         }
 
@@ -221,10 +221,13 @@ export const CompanyCreate = () => {
                 } else {                    
                     setContinent(data[0].continent)
                     setRegion(data[0].region)
-                }
-                
+                }                    
             })
-    }, [companyDataState]);
+            .catch((error) => {
+                console.log("Error: " + error);
+                navigate("/")
+            })     
+    }, [companyDataState, navigate]);
 
     
     /* Fill the array with the data to be put in the respective useState to populate the select. */
@@ -317,8 +320,13 @@ export const CompanyCreate = () => {
                     selectSectorRef.current.value = companyData.current.sector;
                     selectSubsectorRef.current.value = companyData.current.subsector;
                 }
+            
             })
-    }, [companyDataState, location.state.mode]);
+            .catch((error) => {
+                console.log("Error: " + error);
+                navigate("/")
+            })
+    }, [companyDataState, location.state.mode, navigate]);
 
 
     /* Select on change country - Every time the user change the country in the select */

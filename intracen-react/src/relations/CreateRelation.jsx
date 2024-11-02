@@ -143,7 +143,7 @@ const FixedBar = ({relationName, mode, setMode, id, setId}) => {
             <div id="createRelationInnerBar">
                 <button onClick={handleClick} value={mode}>{mode}</button>
                 <label style={messageStyle}>{relationMessage}</label>
-                <button onClick={() => navigate(-1)}>Previous<br/>Page</button>
+                <button onClick={() => navigate('/relation-page')}>Previous<br/>Page</button>
             </div>            
         </div>
     )

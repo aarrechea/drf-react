@@ -93,7 +93,7 @@ const FixedBar = ({submit, children, fcnCleanFields, fcnButtonClick}) => {
 
                 <GeneralButton                    
                     className={'generalButtonClass'}
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate("/element")}
                     children={<p>Previous<br/>page</p>}
                 />               
             </div>
