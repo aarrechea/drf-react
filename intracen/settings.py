@@ -237,6 +237,7 @@ REST_FRAMEWORK = {
 # Cors headers
 CORS_ALLOW_CREDENTIALS = True
 
+
 CORS_ALLOW_HEADERS = (
     "accept",
     "authorization",
