@@ -246,8 +246,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     'https://company-assessments.herokuapp.com',    
     'https://react-only-77acd5320482.herokuapp.com',    
-    'https://react-only-77acd5320482.herokuapp.com/',
-    'http://react-only-77acd5320482.herokuapp.com/',
     'http://react-only-77acd5320482.herokuapp.com',
 ]
 
