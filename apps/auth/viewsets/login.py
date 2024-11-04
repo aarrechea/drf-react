@@ -17,11 +17,7 @@ class LoginViewSet(ViewSet):
     permission_classes = (AllowAny, )
     http_method_names = ['post']
     
-    def create(self, request, *args, **kwargs):
-        
-        
-        print("Enter login")
-        
+    def create(self, request, *args, **kwargs):        
         serializer = self.serializer_class(data=request.data)
                         
         # To get the ip address to know where the user is conncected from.
@@ -35,12 +31,12 @@ class LoginViewSet(ViewSet):
         # Get the city and the country of the ip
         g = GeoIP2()
         try:            
-            country = g.country(ip_address)            
+            country = g.country(ip_address)[0:199]
         except:
             country = "Unknown"
         
         try:        
-            city = g.city(ip_address)
+            city = g.city(ip_address)[0:199]
         except:
             city = "Unknown"
             
