@@ -217,29 +217,31 @@ REST_FRAMEWORK = {
 
 
 # Cors headers
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_HEADERS = [
+CORS_ALLOW_HEADERS = (
     "accept",
-    "accept-encoding",
     "authorization",
     "content-type",
-    "dnt",
-    "origin",
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
-]
+)
 
-CORS_ALLOW_METHODS = [
+CORS_ALLOW_METHODS = (
     "DELETE",
     "GET",
     "OPTIONS",
     "PATCH",
     "POST",
     "PUT",
-]
+)
+
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -260,6 +262,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://react-standalone-app-465feb572a17.herokuapp.com',
     'http://react-standalone-app-465feb572a17.herokuapp.com',
     ]
+
+
 
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
 
