@@ -254,6 +254,9 @@ CORS_ALLOWED_ORIGINS = [
     'https://react-standalone-app-465feb572a17.herokuapp.com',
     'http://react-standalone-app-465feb572a17.herokuapp.com/',
     'http://react-standalone-app-465feb572a17.herokuapp.com',
+    'http://react-standalone-app.herokuapp.com',
+    'https://react-standalone-app.herokuapp.com',
+    
 ]
 
 
