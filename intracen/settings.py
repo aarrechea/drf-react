@@ -19,13 +19,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
-SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6')
-
+#SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6')
+SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if ENV == "PROD" else True
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
+DEBUG = False #if ENV == "PROD" else True
+#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
+
+ALLOWED_HOSTS = [
+    'http://localhost:3000,'
+    'http://127.0.0.1:3000',
+    'https://company-assessments.herokuapp.com',
+    'http://company-assessments.herokuapp.com',
+]
 
 
 
@@ -114,7 +121,7 @@ WSGI_APPLICATION = 'intracen.wsgi.application'
     }
 } """
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv("DATABASE_NAME", "intracen"),
@@ -122,6 +129,17 @@ DATABASES = {
         'PASSWORD': os.getenv("DATABASE_PASSWORD", "postgres"),
         'HOST': os.environ.get("DATABASE_HOST", "localhost"),
         'PORT': os.getenv("DATABASE_PORT", "5432"),
+    }
+} """
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dbfsiplj3i78dr',
+        'USER': 'u11qgv33m8v07n',
+        'PASSWORD': 'pe5f9b8217eaad6d07c50d21124125c6977492db18c72353f81defbc6f71ed4db',
+        'HOST': 'cbec45869p4jbu.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'PORT': "5432",
     }
 }
 
