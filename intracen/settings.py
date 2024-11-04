@@ -244,19 +244,17 @@ SESSION_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    'https://company-assessments.herokuapp.com',    
+    #"http://localhost:3000",
+    #"http://127.0.0.1:3000",    
     'https://react-only-77acd5320482.herokuapp.com',    
     'http://react-only-77acd5320482.herokuapp.com',
     'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',
+    'http://react-standalone-app-465feb572a17.herokuapp.com',    
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    'https://company-assessments.herokuapp.com',    
+    #"http://localhost:3000",
+    #"http://127.0.0.1:3000",    
     'https://react-only-77acd5320482.herokuapp.com',    
     'http://react-only-77acd5320482.herokuapp.com',
     'https://react-standalone-app-465feb572a17.herokuapp.com',
