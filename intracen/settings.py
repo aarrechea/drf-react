@@ -244,11 +244,11 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    'https://company-assessments.herokuapp.com',
-    'https://react-only.herokuapp.com',
-    'https://react-only-77acd5320482.herokuapp.com',
-    'https://react-only-77acd5320482.herokuapp.com:1',
-    'https://react-only-77acd5320482.herokuapp.com/:1',
+    'https://company-assessments.herokuapp.com',    
+    'https://react-only-77acd5320482.herokuapp.com',    
+    'https://react-only-77acd5320482.herokuapp.com/',
+    'http://react-only-77acd5320482.herokuapp.com/',
+    'http://react-only-77acd5320482.herokuapp.com',
 ]
 
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
