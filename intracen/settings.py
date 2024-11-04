@@ -241,13 +241,29 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-CORS_ALLOWED_ORIGINS = [
+""" CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    'https://company-assessments.herokuapp.com',    
+    'https://react-only-77acd5320482.herokuapp.com',    
+    'http://react-only-77acd5320482.herokuapp.com',
+] """
+
+CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     'https://company-assessments.herokuapp.com',    
     'https://react-only-77acd5320482.herokuapp.com',    
     'http://react-only-77acd5320482.herokuapp.com',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    'https://company-assessments.herokuapp.com',    
+    'https://react-only-77acd5320482.herokuapp.com',    
+    'http://react-only-77acd5320482.herokuapp.com',
+    ]
 
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
 
