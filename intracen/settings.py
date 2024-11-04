@@ -216,7 +216,31 @@ REST_FRAMEWORK = {
 
 
 # Cors headers
-""" CORS_ALLOWED_ORIGINS = [
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     'https://company-assessments.herokuapp.com',
@@ -224,9 +248,9 @@ REST_FRAMEWORK = {
     'https://react-only-77acd5320482.herokuapp.com',
     'https://react-only-77acd5320482.herokuapp.com:1',
     'https://react-only-77acd5320482.herokuapp.com/:1',
-] """
+]
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+""" CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
 
 
 
