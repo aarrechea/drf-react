@@ -95,15 +95,21 @@ class RelationViewSet(AbstractViewSet):
                 
         relation = Relation.objects.get(id=pk)
         relation_name = relation.name
-        
-        eva_scores = relation.evaluation.all()[0].evaScore.all().order_by('form_number')                        
-        serializer_eva_scores = EvaluationScoreSerializer(data=eva_scores, many=True)        
-        serializer_eva_scores.is_valid()     
+                        
+                        
+        # If there is no evaluations with the correspondant relation, it would throw an error when
+        # trying to fetch the evaluations related to.
+        try:
+            eva_scores = relation.evaluation.all()[0].evaScore.all().order_by('form_number')                        
+            serializer_eva_scores = EvaluationScoreSerializer(data=eva_scores, many=True)        
+            eva_scores_to_send = serializer_eva_scores.is_valid()
+        except:
+            eva_scores_to_send = {}
+            
         
         obj = relation.relation_tree.all().order_by('order').values()
         obj_list = list(obj)
-        
-        
+                
         for object in obj_list:            
             element = Element.objects.get(id=object['element_id'])
             
@@ -128,7 +134,7 @@ class RelationViewSet(AbstractViewSet):
         response = {
             'data':serializer.data,
             'relation_name':relation_name,
-            'eva_scores':serializer_eva_scores.data
+            'eva_scores':eva_scores_to_send #serializer_eva_scores.data
         }
                                 
         return Response(response)
