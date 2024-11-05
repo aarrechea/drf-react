@@ -21,15 +21,15 @@ class LoginViewSet(ViewSet):
         serializer = self.serializer_class(data=request.data)
                         
         # To get the ip address to know where the user is conncected from.
-        """ ip_address = request.META.get('HTTP_X_FORWARDED_FOR')            
+        ip_address = request.META.get('HTTP_X_FORWARDED_FOR')            
         if ip_address:
             ip_address = ip_address.split(',')[0]
         else:
-            ip_address = request.META.get('REMOTE_ADDR') """
+            ip_address = request.META.get('REMOTE_ADDR')
             
                 
         # Get the city and the country of the ip
-        """ g = GeoIP2()
+        g = GeoIP2()
         try:            
             country = g.country(ip_address)[0:199]
         except:
@@ -38,12 +38,12 @@ class LoginViewSet(ViewSet):
         try:        
             city = g.city(ip_address)[0:199]
         except:
-            city = "Unknown" """
+            city = "Unknown"
             
             
         # Create the object in the database.
-        """ new_log = Logs(ip=ip_address, location_country=country, location_city=city)
-        new_log.save() """
+        new_log = Logs(ip=ip_address, location_country=country, location_city=city)
+        new_log.save()
                 
         
                     

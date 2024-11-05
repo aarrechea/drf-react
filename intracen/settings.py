@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #if ENV == "PROD" else True
+DEBUG = False if ENV == "PROD" else True
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 
 
@@ -114,7 +114,7 @@ WSGI_APPLICATION = 'intracen.wsgi.application'
     }
 } """
 
-""" DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv("DATABASE_NAME", "intracen"),
@@ -123,18 +123,8 @@ WSGI_APPLICATION = 'intracen.wsgi.application'
         'HOST': os.environ.get("DATABASE_HOST", "localhost"),
         'PORT': os.getenv("DATABASE_PORT", "5432"),
     }
-} """
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dbfsiplj3i78dr',
-        'USER': 'u11qgv33m8v07n',
-        'PASSWORD': 'pe5f9b8217eaad6d07c50d21124125c6977492db18c72353f81defbc6f71ed4db',
-        'HOST': 'cbec45869p4jbu.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
-        'PORT': "5432",
-    }
 }
+
 
 """ DATABASES = {
     'default': {
@@ -263,6 +253,9 @@ CORS_ALLOWED_ORIGINS = [
     'react-standalone-app.herokuapp.com',
     'react-standalone-app.herokuapp.com',    
 ]
+
+CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
 
 
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
