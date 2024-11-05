@@ -34,16 +34,13 @@ class LoginViewSet(ViewSet):
                 
         # Get the city and the country of the ip
         g = GeoIP2()
-        try:
-            print("\ncountry object: ", g.country(ip_address))
-            print("\ncountry name: ", g.country(ip_address)['country_name'])
+        try:            
             country = g.country(ip_address)['country_name']
         except:
             country = "Unknown"
         
-        try:        
-            print("\ncity object: ", g.city(ip_address))
-            city = g.city(ip_address)[0:199]
+        try:                    
+            city = g.city(ip_address)['city']
         except:
             city = "Unknown"
             
