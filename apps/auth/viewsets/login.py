@@ -26,11 +26,7 @@ class LoginViewSet(ViewSet):
             ip_address = ip_address.split(',')[0]
         else:
             ip_address = request.META.get('REMOTE_ADDR')
-            
-            
-        print("\nx forwarded: ", request.META.get('HTTP_X_FORWARDED_FOR'))
-        print("\nremote addr: ", request.META.get('REMOTE_ADDR'))
-            
+                      
                 
         # Get the city and the country of the ip
         g = GeoIP2()
