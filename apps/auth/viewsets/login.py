@@ -17,23 +17,25 @@ class LoginViewSet(ViewSet):
     permission_classes = (AllowAny, )
     http_method_names = ['post']
     
-    def create(self, request, *args, **kwargs):
-        
-        print("Enter login viewset")
-        
+    def create(self, request, *args, **kwargs):                        
         serializer = self.serializer_class(data=request.data)
                         
         # To get the ip address to know where the user is conncected from.
-        ip_address = request.META.get('HTTP_X_FORWARDED_FOR')            
+        ip_address = request.META.get('HTTP_X_FORWARDED_FOR')
         if ip_address:
             ip_address = ip_address.split(',')[0]
         else:
             ip_address = request.META.get('REMOTE_ADDR')
             
+            
+        print("\nx forwarded: ", request.META.get('HTTP_X_FORWARDED_FOR'))
+        print("\nremote addr: ", request.META.get('REMOTE_ADDR'))
+            
                 
         # Get the city and the country of the ip
         g = GeoIP2()
-        try:            
+        try:
+            print("\ncountry: ", g.country(ip_address))
             country = g.country(ip_address)[0:199]
         except:
             country = "Unknown"
@@ -48,8 +50,6 @@ class LoginViewSet(ViewSet):
         new_log = Logs(ip=ip_address, location_country=country, location_city=city)
         new_log.save()
                 
-        print("\nBefore try except in login view - serializer: ", serializer)
-                    
         try:                        
             serializer.is_valid(raise_exception=True)
         except TokenError as e:                                    

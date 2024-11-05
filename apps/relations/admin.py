@@ -1,3 +1,10 @@
+# Imports
 from django.contrib import admin
+from apps.relations.models import Relation
 
-# Register your models here.
+
+
+
+@admin.register(Relation)
+class RelationAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in Relation._meta.get_fields()]

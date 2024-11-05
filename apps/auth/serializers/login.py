@@ -11,10 +11,7 @@ from apps.user.serializers import UserSerializer
 class LoginSerializer(TokenObtainPairSerializer):                
     def validate(self, attrs):        
         # super() is a built-in method in python that returns a temporary object that can
-        # be used to access the class methods of the base class
-        
-        print("Enter login serializer")
-        
+        # be used to access the class methods of the base class        
         data = super().validate(attrs)        
         refresh = self.get_token(self.user)
                                                 
@@ -24,8 +21,6 @@ class LoginSerializer(TokenObtainPairSerializer):
         
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
-            
-        print("\nBefore return in login serializer - data: ", data)
             
         return data
 
