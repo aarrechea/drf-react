@@ -27,9 +27,12 @@ SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
 DEBUG = False if ENV == "PROD" else True
 #ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 ALLOWED_HOSTS = [
-    'https://company-assessments.herokuapp.com', 
-    '127.0.0.1,localhost', 
+    'https://company-assessments.herokuapp.com',
+    'http://company-assessments.herokuapp.com',
+    '127.0.0.1',
+    'localhost', 
     'https://company-assessments-5bca7a5a150a.herokuapp.com',
+    'http://company-assessments-5bca7a5a150a.herokuapp.com',
 ]
 
 
@@ -69,9 +72,9 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 # Middleware
 MIDDLEWARE = [    
-    'django.middleware.security.SecurityMiddleware',    
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',    
+    'django.contrib.sessions.middleware.SessionMiddleware',    
     'django.middleware.common.CommonMiddleware',    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -254,7 +257,7 @@ CORS_ALLOWED_ORIGINS = [
     #"http://localhost:3000",
     #"http://127.0.0.1:3000",        
     'react-standalone-app-465feb572a17.herokuapp.com',
-    'react-standalone-app-465feb572a17.herokuapp.com',    
+    'react-standalone-app-465feb572a17.herokuapp.com',
     'react-standalone-app.herokuapp.com',
     'react-standalone-app.herokuapp.com',    
 ]
