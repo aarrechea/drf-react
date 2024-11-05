@@ -1,21 +1,26 @@
 # Imports
 from django.contrib import admin
-from apps.relations.models import Relation
+from apps.relations.models import Relation, RelationTree
 
 
-
-
-""" @admin.register(Relation)
+@admin.register(Relation)
 class RelationAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         'id',
-        'order',
-        'capability_number',
-        'process_number',
-        'percentage',
-        'element_type',
-        'relation_letter',
-        'relation_letter_display',
-        'element',
-        'relation',                
-    ) """
+        'name',
+        'total_elements',
+        'competences',
+        'capabilities',
+        'processes',
+        'eva_made',
+        'eva_progress',
+        'user_creator',
+        'comments',
+        'status',
+    ]
+    
+    
+    
+@admin.register(RelationTree)
+class RelationTreeAdmin(admin.ModelAdmin):
+    list_display = [item.name for item in RelationTree._meta.fields if item.name != 'id']
