@@ -12,6 +12,9 @@ class LoginSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):        
         # super() is a built-in method in python that returns a temporary object that can
         # be used to access the class methods of the base class
+        
+        print("Enter login serializer")
+        
         data = super().validate(attrs)        
         refresh = self.get_token(self.user)
                                                 

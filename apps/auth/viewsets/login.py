@@ -17,7 +17,10 @@ class LoginViewSet(ViewSet):
     permission_classes = (AllowAny, )
     http_method_names = ['post']
     
-    def create(self, request, *args, **kwargs):        
+    def create(self, request, *args, **kwargs):
+        
+        print("Enter login viewset")
+        
         serializer = self.serializer_class(data=request.data)
                         
         # To get the ip address to know where the user is conncected from.
