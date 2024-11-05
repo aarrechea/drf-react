@@ -45,7 +45,7 @@ class LoginViewSet(ViewSet):
         new_log = Logs(ip=ip_address, location_country=country, location_city=city)
         new_log.save()
                 
-        
+        print("\nBefore try except in login view - serializer: ", serializer)
                     
         try:                        
             serializer.is_valid(raise_exception=True)
