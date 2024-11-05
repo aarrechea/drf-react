@@ -25,14 +25,7 @@ SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False #if ENV == "PROD" else True
-#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
-
-ALLOWED_HOSTS = [
-    'http://localhost:3000,'
-    'http://127.0.0.1:3000',
-    'https://company-assessments.herokuapp.com',
-    'http://company-assessments.herokuapp.com',
-]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 
 
 
@@ -264,30 +257,12 @@ CSRF_COOKIE_SAMESITE = 'None'
 
 CORS_ALLOWED_ORIGINS = [
     #"http://localhost:3000",
-    #"http://127.0.0.1:3000",    
-    'https://react-only-77acd5320482.herokuapp.com',    
-    'http://react-only-77acd5320482.herokuapp.com',
-    'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',    
-    'https://react-standalone-app-465feb572a17.herokuapp.com/',
-    'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com/',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app.herokuapp.com',
-    'https://react-standalone-app.herokuapp.com',
-    
+    #"http://127.0.0.1:3000",        
+    'react-standalone-app-465feb572a17.herokuapp.com',
+    'react-standalone-app-465feb572a17.herokuapp.com',    
+    'react-standalone-app.herokuapp.com',
+    'react-standalone-app.herokuapp.com',    
 ]
-
-
-""" CSRF_TRUSTED_ORIGINS = [
-    #"http://localhost:3000",
-    #"http://127.0.0.1:3000",    
-    'https://react-only-77acd5320482.herokuapp.com',    
-    'http://react-only-77acd5320482.herokuapp.com',
-    'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',
-    ] """
-
 
 
 """ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
