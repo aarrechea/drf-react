@@ -3,7 +3,7 @@ from rest_framework import routers
 from rest_framework_nested import routers
 from apps.auth.viewsets import RegisterViewSet, LoginViewSet, RefreshViewSet
 from apps.companies.viewsets import CompanyViewSet
-from apps.country.viewsets import CountryViewSet, RegionViewSet
+from apps.country.viewsets import CountryViewSet
 from apps.element.viewsets import ElementViewSet
 from apps.evaluations.viewsets import EvaluationsViewSet, DataModelViewSet
 from apps.industry.viewsets import IndustryViewSet

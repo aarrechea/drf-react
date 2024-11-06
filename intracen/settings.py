@@ -32,9 +32,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost', 
     'https://company-assessments-5bca7a5a150a.herokuapp.com',
-    'http://company-assessments-5bca7a5a150a.herokuapp.com',
-    '200.69.41.218',
-    'http://200.69.41.218',
+    'http://company-assessments-5bca7a5a150a.herokuapp.com',    
 ]
 
 
@@ -259,7 +257,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",                
     'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',  
+    'http://react-standalone-app-465feb572a17.herokuapp.com',      
+    'http://200.69.41.218',
 ]
 
 
