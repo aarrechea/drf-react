@@ -28,9 +28,9 @@ class CountrySerializer(AbstractSerializer):
         
 """ Region serializer """        
 class RegionSerializer(serializers.Serializer):
-    def get_queryset(self):        
-        queryset = Region.objects.all()
-        return queryset
+    
+    def create(self, validated_data):
+        return super().create(validated_data)
     
             
     class Meta:

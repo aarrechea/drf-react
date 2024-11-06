@@ -170,7 +170,7 @@ def create_relation_tree(table, id, self):
                 'related_capability':related_capability                
             })
                             
-        serializer = RelationTreeSerializer(data=newObject, many=True)        
+        serializer = RelationTreeSerializer(data=newObject, many=True)
         serializer.is_valid(raise_exception=True)
                 
         self.perform_create(serializer)

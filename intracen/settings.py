@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if ENV == "PROD" else True
+DEBUG = True # False if ENV == "PROD" else True
 #ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 ALLOWED_HOSTS = [
     'https://company-assessments.herokuapp.com',
@@ -33,6 +33,8 @@ ALLOWED_HOSTS = [
     'localhost', 
     'https://company-assessments-5bca7a5a150a.herokuapp.com',
     'http://company-assessments-5bca7a5a150a.herokuapp.com',
+    '200.69.41.218',
+    'http://200.69.41.218',
 ]
 
 
@@ -260,12 +262,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://react-standalone-app-465feb572a17.herokuapp.com',  
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',  
-    'https://company-assessments-5bca7a5a150a.herokuapp.com/admin',
-    'http://company-assessments-5bca7a5a150a.herokuapp.com/admin',
-]
+
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
 CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
