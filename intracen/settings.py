@@ -263,6 +263,8 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://react-standalone-app-465feb572a17.herokuapp.com',
     'http://react-standalone-app-465feb572a17.herokuapp.com',  
+    'https://company-assessments-5bca7a5a150a.herokuapp.com/admin',
+    'http://company-assessments-5bca7a5a150a.herokuapp.com/admin',
 ]
 
 CSRF_COOKIE_NAME = 'XSRF-TOKEN'
