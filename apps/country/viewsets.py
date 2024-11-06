@@ -29,6 +29,19 @@ class CountryViewSet(AbstractViewSet):
         return obj
     
     
+    def create(self, request, *args, **kwargs):  
+        
+        print("\nrequest data: ", request.data)
+              
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        print("\nserializer: ", serializer.data)
+        
+        #self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    
     
     
     
