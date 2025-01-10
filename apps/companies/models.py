@@ -5,7 +5,7 @@ from django.db import models
 from apps.abstract.models import AbstractModel, AbstractManager
 from apps.user.models import User
 from apps.country.models import Country
-from apps.industry.models import Subsector
+from apps.subsector.models import Subsector
 
 
 

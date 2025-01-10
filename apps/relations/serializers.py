@@ -30,11 +30,9 @@ class RelationSerializer(AbstractSerializer):
         
 """ Relation tree serializer """        
 class RelationTreeSerializer(AbstractSerializer):
-    name = serializers.SerializerMethodField()
-    public_id = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()    
     
-    
-    
+        
     def to_representation(self, instance):
         rep = super().to_representation(instance)        
         element_object = Element.objects.get(id=rep['element'])        
@@ -42,13 +40,11 @@ class RelationTreeSerializer(AbstractSerializer):
         
         return rep
     
-                
-                
+                                
     def validate_user_creator(self, value):                
         return value
                 
-                
-                
+                                
     def validate_percentage(self, value):                
         try:
             percentage = Decimal(value)
@@ -56,23 +52,20 @@ class RelationTreeSerializer(AbstractSerializer):
         except:
             return False
     
-    
-    
+        
     # To match the new serializer method field that is not present in the original model.
     def get_name(self, obj):             
         return obj['element'].name
     
-    
-    
+        
     def get_public_id(self, obj):        
         return obj['element'].public_id
     
-    
-        
+            
     class Meta:
         model = RelationTree
         fields = ['order', 'capability_number', 'process_number', 'percentage', 'element_type', 'id',
-                'relation_letter', 'relation_letter_display', 'element', 'relation', 'name', 'public_id',
+                'relation_letter', 'relation_letter_display', 'element', 'relation', 'name',
                 'related_competence', 'related_capability']
         
         

@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.db.models import Sum, F, Count
+from django.db.models import Sum, F, Count, Q
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.decorators import action
@@ -24,7 +24,7 @@ class EvaluationsViewSet(AbstractViewSet):
     queryset = Evaluation.objects.all()
 
 
-    # Create is the viewset action excecuted on POST requests on the endpoint linked to viewset
+    # Creating the evaluation, and the evaluation score
     def create(self, request, *args, **kwargs):        
         try:
             with transaction.atomic():                                
@@ -35,8 +35,7 @@ class EvaluationsViewSet(AbstractViewSet):
                 relation = Relation.objects.get(id=request.data['relation'])
                 relation.eva_progress += 1
                 relation.save()
-                
-                
+                                
                 # Creating the evaluation    
                 serializer = self.get_serializer(data=request.data)
                 serializer.is_valid(raise_exception=True)        
@@ -46,14 +45,14 @@ class EvaluationsViewSet(AbstractViewSet):
                 maxId = Evaluation.objects.all().order_by('-id')[:1]
                 DataModel.objects.create(evaluation=maxId[0])
                 
-                """ Create the evaluation score table calling RelationTree first to know the elements involved """
-                maxId_serialized = EvaluationsSerializer(maxId[0]).data
-                relation_tree = RelationTree.objects.filter(relation=maxId_serialized['relation']).order_by('order')
-                #relation_tree = RelationTree.objects.select_for_update().filter(relation=maxId_serialized['relation']).order_by('order')
+                """ Create the evaluation score table calling RelationTree first, to know the elements involved """
+                maxId_serialized = EvaluationsSerializer(maxId[0]).data                
+                relation_tree = RelationTree.objects.filter(relation=maxId_serialized['relation']).order_by('order')                
                 
+                # Creating the evaluation score
                 array = []
-                for item in relation_tree:            
-                    item.element.eva_progress += 1                                    
+                for item in relation_tree:                                        
+                    item.element.eva_progress += 1
                     item.element.save()
                     
                     evaluation_score = EvaluationScore(
@@ -61,7 +60,8 @@ class EvaluationsViewSet(AbstractViewSet):
                         form_number = item.order,
                         order = item.order,
                         evaluation = maxId[0],
-                        relation_tree = item
+                        relation_tree = item,
+                        element_type = item.element.element_type
                     )
                     array.append(evaluation_score)                    
                         
@@ -73,7 +73,7 @@ class EvaluationsViewSet(AbstractViewSet):
     
     
     # Delete the evaluation
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):        
         try:
             with transaction.atomic():
                 obj = Evaluation.objects.get(id=self.kwargs['pk'])
@@ -86,15 +86,15 @@ class EvaluationsViewSet(AbstractViewSet):
                 relation.eva_progress -= 1
                                 
                 rel_tree = obj.relation.relation_tree.all()
-
-                self.perform_destroy(obj)
-                company.save()
-                relation.save()
-                
+                                
                 # update each item in the relation tree
                 for item in rel_tree:                    
                     item.element.eva_progress -= 1
                     item.element.save()
+
+                self.perform_destroy(obj)
+                company.save()
+                relation.save()
                 
                 return Response({'result':'success'}, status=status.HTTP_200_OK)
             
@@ -116,7 +116,7 @@ class EvaluationsViewSet(AbstractViewSet):
     # To get the evaluation score related a relation tree
     @action(methods=['get'], detail=True, permission_classes=[UserPermission])
     def getEvaluationScore(self, request, pk=None):        
-        eva_scores = EvaluationScore.objects.filter(evaluation=pk).order_by('form_number')
+        eva_scores = EvaluationScore.objects.filter(evaluation=pk, element_type=3).order_by('form_number')
         serializer = EvaluationScoreSerializer(data=eva_scores, many=True)        
         serializer.is_valid()        
         
@@ -128,16 +128,19 @@ class EvaluationsViewSet(AbstractViewSet):
     def updateScore(self, request, pk=None):        
         eva_score = EvaluationScore.objects.filter(evaluation=pk).get(element=request.data['id_element'])        
         eva_score.first_score = request.data['newScore']
-        eva_score.save()
+        eva_score.save()                
         
         serializer = self.getEvaluationScore(request, pk)
-        
+                        
         # Update the number of elements evaluated, to put the count in the evaluations table.
-        total_evaluated = EvaluationScore.objects.filter(evaluation=pk, first_score__gt=0).aggregate(total_evaluated=Count('first_score'))
+        total_evaluated = EvaluationScore.objects.filter(
+            evaluation=pk, first_score__gt=0).aggregate(
+                total_evaluated=Count('first_score'))                
+        
         actual_eva = Evaluation.objects.get(id=pk)
         actual_eva.processes_evaluated = total_evaluated['total_evaluated']
         actual_eva.save()
-                
+                        
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     
@@ -221,13 +224,13 @@ def calculate_capability_score(eva_relation_tree, pk):
                         )
     
     # Put the values that represent the weight of each competence in each group of capabilities.
-    for line in evaluation_capabilities:
+    for line in evaluation_capabilities:                
         for element in count_competences:            
             if int(line.competence) == int(element['competence']):                
-                line.count_competence = 1 / element['count']
+                line.competence_weight = 1 / element['count']
                 line.save()
 
-    return 1
+    return evaluation_capabilities
 
 
 
@@ -312,11 +315,8 @@ class DataModelViewSet(AbstractViewSet):
         obj = DataModel.objects.get(id=self.kwargs['pk'])
         
         serializer = self.serializer_class(obj, data=request.data)        
-        serializer.is_valid()
-        
-        print("\nSerializer errors: ", serializer.errors)
-        
-        #serializer.save()
+        serializer.is_valid()        
+        serializer.save()
         
         return Response({'updated':'updated'})
     

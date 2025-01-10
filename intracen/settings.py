@@ -1,14 +1,9 @@
 # Imports
-import os
 import django_heroku
+import os
+from datetime import timedelta
+from decouple import config, Csv
 from pathlib import Path
-from dotenv import load_dotenv
-
-
-
-# Loading dotenv
-load_dotenv()
-ENV = os.environ.get("ENV")
 
 
 
@@ -18,22 +13,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
-#SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6')
-SECRET_KEY = 'django-insecure-7w1%wxfq2rrbqycal^qprwsi*d)dfqp(gdyi+b6jejt3_fyh&6'
+SECRET_KEY = config('SECRET_KEY') 
+
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # False if ENV == "PROD" else True
-#ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="*").split(",")
-ALLOWED_HOSTS = [
-    'https://company-assessments.herokuapp.com',
-    'http://company-assessments.herokuapp.com',
-    '127.0.0.1',
-    'localhost', 
-    'https://company-assessments-5bca7a5a150a.herokuapp.com',
-    'http://company-assessments-5bca7a5a150a.herokuapp.com',    
-]
+DEBUG = config("DEBUG", default=False, cast=bool)
+
+
+
+# Allowed hosts
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv())
 
 
 
@@ -58,6 +48,11 @@ LOCAL_APPS = [
     'apps.companies',
     'apps.evaluations',
     'apps.logs',
+    'apps.region',
+    'apps.continent',
+    'apps.supersector',
+    'apps.sector',
+    'apps.subsector',
 ]
 
 THIRD_PARTY_APPS = [
@@ -102,6 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #'django.template.context_processors.csrf',
             ],
         },
     },
@@ -115,35 +111,28 @@ WSGI_APPLICATION = 'intracen.wsgi.application'
 
 
 # Database
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': "intracen",
+            'USER': "postgres",
+            'PASSWORD': "postgres",
+            'HOST': "localhost",
+            'PORT': "5432",
+        }
     }
-} """
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv("DATABASE_NAME", "intracen"),
-        'USER': os.getenv("DATABASE_USER", "postgres"),
-        'PASSWORD': os.getenv("DATABASE_PASSWORD", "postgres"),
-        'HOST': os.environ.get("DATABASE_HOST", "localhost"),
-        'PORT': os.getenv("DATABASE_PORT", "5432"),
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config("DATABASE_NAME"),
+            'USER': config("DATABASE_USER"),
+            'PASSWORD': config("DATABASE_PASSWORD"),
+            'HOST': config("DATABASE_HOST"),
+            'PORT': config("DATABASE_PORT"),
+        }
     }
-}
-
-
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "intracen",
-        'USER': "postgres",
-        'PASSWORD': "postgres",
-        'HOST': "localhost",
-        'PORT': "5432",
-    }
-} """
 
 
 
@@ -196,83 +185,62 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    #'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    #'PAGE_SIZE':15,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],    
 }
 
 
 
-# Authentication backend
-""" AUTHENTICATION_BACKENDS = (
-    'apps.backends.EmailBackend',    
-) """
+# Simple JWT settings
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(hours=12),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": config('SECRET_KEY'),
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=15),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(hours=12),
+
+    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
 
 
 
-# JWT
-""" JWT_AUTH = {
-    # how long the original token is valid for
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
-
-    # allow refreshing of tokens
-    'JWT_ALLOW_REFRESH': True,
-
-    # this is the maximum time AFTER the token was issued that
-    # it can be refreshed.  exprired tokens can't be refreshed.
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-} """
-
-
-
-# Cors headers
-CORS_ALLOW_CREDENTIALS = True
-
-
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
-
-CORS_ALLOW_METHODS = (
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-)
-
-CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_HTTPONLY = True
-
-SESSION_COOKIE_SAMESITE = 'None'
-CSRF_COOKIE_SAMESITE = 'None'
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",                
-    'https://react-standalone-app-465feb572a17.herokuapp.com',
-    'http://react-standalone-app-465feb572a17.herokuapp.com',      
-    'http://200.69.41.218',
-]
-
-
-
-CSRF_COOKIE_NAME = 'XSRF-TOKEN'
-CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
-
-
-""" CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") """
+# Cors
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", cast=Csv())
 
 
 
 # Geo ip path
 GEOIP_PATH = BASE_DIR / 'geoIp'
+
 
 
 # Django Heroku settings.

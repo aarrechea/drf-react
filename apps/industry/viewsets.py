@@ -4,8 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.abstract.viewsets import AbstractViewSet
 from apps.auth.permissions import UserPermission
-from apps.industry.models import Industry, Supersector, Sector, Subsector
-from apps.industry.serializers import IndustrySerializer, SupersectorSerializer, SubsectorSerializer
+from apps.industry.models import Industry
+from apps.industry.serializers import IndustrySerializer
 
 
 
@@ -22,7 +22,7 @@ class IndustryViewSet(AbstractViewSet):
         return queryset
     
     
-class SupersectorViewSet(AbstractViewSet):
+""" class SupersectorViewSet(AbstractViewSet):
         serializer_class = SupersectorSerializer
     
         def get_queryset(self):                                    
@@ -38,6 +38,6 @@ class SubsectorViewSet(AbstractViewSet):
         obj = Subsector.objects.get(self.kwargs['pk'])
         self.check_object_permissions(self.request, obj)
         
-        return obj
+        return obj """
     
     

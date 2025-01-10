@@ -3,10 +3,12 @@ from rest_framework import routers
 from rest_framework_nested import routers
 from apps.auth.viewsets import RegisterViewSet, LoginViewSet, RefreshViewSet
 from apps.companies.viewsets import CompanyViewSet
+
 from apps.country.viewsets import CountryViewSet
 from apps.element.viewsets import ElementViewSet
 from apps.evaluations.viewsets import EvaluationsViewSet, DataModelViewSet
 from apps.industry.viewsets import IndustryViewSet
+from apps.region.viewsets import RegionViewSet
 from apps.relations.viewsets import RelationViewSet
 from apps.user.viewsets import UserViewSet
 
@@ -36,11 +38,15 @@ router.register(r'relations', RelationViewSet, basename='relations')
 
 """ Countries """
 router.register(r'countries', CountryViewSet, basename='countries')
-#router.register(r'region', RegionViewSet, basename='region')
+router.register(r'region', RegionViewSet, basename='region')
+#router.register(r'continent', ContinentViewSet, basename='continent')
 
 
 """ Industry """
 router.register(r'industry', IndustryViewSet, basename='industry')
+#router.register(r'supersector', SupersectorViewSet, basename='supersector')
+#router.register(r'sector', SectorViewSet, basename='sector')
+#router.register(r'subsector', SubsectorViewSet, basename='subsector')
 
 
 """ Companies """

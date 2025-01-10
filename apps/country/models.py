@@ -1,32 +1,15 @@
 """ Imports """
 from django.db import models
 from apps.abstract.models import AbstractModel
-
-
-
-"""--------------------------------------------------------------------------------------
-    Region model
---------------------------------------------------------------------------------------"""
-class Region(models.Model):
-    name = models.CharField(max_length=150)
-
-    def __str__(self) -> str:
-        return f"Name: {self.name} - Id: {self.id}"
-
-
-
-"""--------------------------------------------------------------------------------------
-    Region model
---------------------------------------------------------------------------------------"""
-class Continent(models.Model):
-   name = models.CharField(max_length=150)
+from apps.continent.models import Continent
+from apps.region.models import Region
 
 
 
 """--------------------------------------------------------------------------------------
     Country model
 --------------------------------------------------------------------------------------"""
-class Country(AbstractModel):
+class Country(models.Model):
     name = name = models.CharField(max_length=150, verbose_name='Country')
     inhabitants = models.IntegerField(default=0)
     continent = models.ForeignKey(Continent, on_delete=models.CASCADE)

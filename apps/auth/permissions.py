@@ -6,7 +6,7 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 """ User permission class """
 class UserPermission(BasePermission):            
     basenameArray = ['element', 'relations', 'company', 'countries', 'industry', 'evaluations',
-                     'data-model', 'region']
+                    'data-model', 'region']
             
     # works in the object level
     def has_object_permission(self, request, view, obj):        
@@ -32,7 +32,7 @@ class UserPermission(BasePermission):
     
     
     # works in the overall endpoint
-    def has_permission(self, request, view):                
+    def has_permission(self, request, view):        
         if view.basename in self.basenameArray:
             if request.user.is_anonymous:
                 return request.method in SAFE_METHODS

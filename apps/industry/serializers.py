@@ -2,7 +2,10 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from apps.abstract.serializers import AbstractSerializer
-from apps.industry.models import Industry, Supersector, Sector, Subsector
+from apps.industry.models import Industry
+from apps.supersector.models import Supersector
+from apps.sector.models import Sector
+from apps.subsector.models import Subsector
 
 
 

@@ -35,32 +35,10 @@ class CountryViewSet(AbstractViewSet):
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-    @action(methods=['post'], detail=False, permission_classes=[AllowAny])
-    def create_region(self, request):
-        serializer = RegionSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)        
-        self.perform_create(serializer)
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
     
 
-""" Region viewset """
-""" class RegionViewSet(AbstractViewSet):
-    http_method_names = ['get', 'post', 'put', 'delete']
-    permission_classes = (UserPermission, )
-    serializer_class = RegionSerializer
-            
-    def get_queryset(self):        
-        queryset = Region.objects.all()
-        return queryset
-    
-    
-    def create(self, request, *args, **kwargs):        
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)        
-        self.perform_create(serializer)
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED) """
+
 
     
     

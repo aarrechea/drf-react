@@ -65,6 +65,7 @@ class EvaluationScore(models.Model):
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE, related_name='evaScore')
     relation_tree = models.ForeignKey(RelationTree, on_delete=models.CASCADE, related_name='relation_tree_related')
     final_score = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+    element_type = models.IntegerField()
     
     # percetage representation of the original score
     percentage_score = models.DecimalField(default=0, max_digits=5, decimal_places=2)    

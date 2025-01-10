@@ -5,9 +5,11 @@ from apps.abstract.serializers import AbstractSerializer
 from apps.companies.models import Company
 from apps.country.models import Country, Continent, Region
 from apps.country.serializers import CountrySerializer
-from apps.industry.models import Industry, Supersector, Sector, Subsector
-from apps.industry.serializers import (SubsectorSerializer, SectorSerializer, SupersectorSerializer, 
-    IndustrySerializer)
+from apps.industry.models import Industry
+from apps.supersector.models import Supersector
+from apps.sector.models import Sector
+from apps.subsector.models import Subsector
+from apps.industry.serializers import IndustrySerializer, SupersectorSerializer, SectorSerializer, SubsectorSerializer
 from apps.user.models import User
 
 

@@ -89,24 +89,27 @@ class RelationViewSet(AbstractViewSet):
         
     @action(methods=['get'], detail=True, permission_classes=[AllowAny])
     def get_object_tree(self, request, pk=None):
-        serializer_class = RelationTreeSerializer                
+        serializer_class = RelationTreeSerializer
+        
+        eva_id = self.request.query_params.get('eva_id')
         
         newObject = []
                 
         relation = Relation.objects.get(id=pk)
         relation_name = relation.name
-                        
+        
                         
         # If there is no evaluations with the correspondant relation, it would throw an error when
         # trying to fetch the evaluations related to.
-        try:
-            eva_scores = relation.evaluation.all()[0].evaScore.all().order_by('form_number')                        
-            serializer_eva_scores = EvaluationScoreSerializer(data=eva_scores, many=True)        
-            eva_scores_to_send = serializer_eva_scores.is_valid()
+        try:            
+            eva_scores = relation.evaluation.filter(id=eva_id)[0].evaScore.filter(element_type=3).order_by('form_number')                                
+            serializer_eva_scores = EvaluationScoreSerializer(eva_scores, many=True)            
+            eva_scores_to_send = serializer_eva_scores.data
+            
         except:
             eva_scores_to_send = {}
             
-        
+            
         obj = relation.relation_tree.all().order_by('order').values()
         obj_list = list(obj)
                 

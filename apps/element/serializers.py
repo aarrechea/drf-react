@@ -38,7 +38,7 @@ class ElementSerializer(AbstractSerializer):
         model = Element
         fields = ['user_creator', 'id', 'element_type', 'letter', 'name', 'comments', 'eva_progress', 'eva_made',
                 'definitions', 'symptoms', 'questions', 'assess_one', 'assess_two', 'assess_three',
-                'assess_four', 'assess_five', 'public_id', 'letter_display', 'element_type_display']
+                'assess_four', 'assess_five', 'letter_display', 'element_type_display']
     
 
 
